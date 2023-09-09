@@ -1,36 +1,78 @@
-namespace BlogTemplate.Presentation
-{
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            var builder = WebApplication.CreateBuilder(args);
+using BlogTemplate.Domain.Models;
+using BlogTemplate.Infrastructure.Data;
+using BlogTemplate.Infrastructure;
 
-            // Add services to the container.
-            builder.Services.AddControllersWithViews();
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+using BlogTemplate.Application;
+using BlogTemplate.Application.Abstractions.Database;
+using BlogTemplate.Application.Common.Mappings;
+using System.Reflection;
 
-            var app = builder.Build();
+var builder = WebApplication.CreateBuilder(args);
 
-            // Configure the HTTP request pipeline.
-            if (!app.Environment.IsDevelopment())
+builder.Services.AddControllersWithViews()
+            .AddNewtonsoftJson(options =>
             {
-                app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
-            }
+                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+            });
 
-            app.UseHttpsRedirection();
-            app.UseStaticFiles();
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
-            app.UseRouting();
+builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
+builder.Services.AddScoped<IApplicationDbContext>(provider =>
+                provider.GetRequiredService<ApplicationDbContext>());
 
-            app.UseAuthorization();
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddDefaultTokenProviders();
 
-            app.MapControllerRoute(
-                name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+builder.Services.AddAutoMapper(config =>
+{
+    config.AddProfile(new AssemblyMappingProfile(Assembly.GetExecutingAssembly()));
+    config.AddProfile(new AssemblyMappingProfile(typeof(IApplicationDbContext).Assembly));
+});
 
-            app.Run();
-        }
+builder.Services.AddApplication();
+builder.Services.AddScoped<IDbInitializer, DbInitializer>();
+
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/login";
+    options.AccessDeniedPath = "/AccessDenied";
+});
+
+var app = builder.Build();
+DataSeeding();
+
+if (!app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler("/Home/Error");
+    app.UseHsts();
+}
+
+app.UseHttpsRedirection();
+app.UseStaticFiles();
+
+app.UseRouting();
+
+app.UseAuthentication();
+
+app.UseAuthorization();
+
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}");
+
+app.Run();
+
+void DataSeeding()
+{
+    using (var scope = app.Services.CreateScope())
+    {
+        var DbInitialize = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
+        DbInitialize.Initialize();
     }
 }
+
