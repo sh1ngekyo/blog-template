@@ -1,22 +1,15 @@
 ﻿using BlogTemplate.Application.Abstractions.Database;
 using BlogTemplate.Application.Abstractions.Enums;
 using BlogTemplate.Application.Abstractions;
-using BlogTemplate.Application.Features.Post.Commands.Create;
 using BlogTemplate.Domain.Models;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using BlogTemplate.Domain;
 using Microsoft.EntityFrameworkCore;
 
 namespace BlogTemplate.Application.Features.Post.Commands.Delete
 {
-    public class DeletePostCommandHandler : IRequestHandler<DeletePostCommand, Result<DeletePostCommandResponse>>
+    public class DeletePostCommandHandler 
+        : IRequestHandler<DeletePostCommand, Result<DeletePostCommandResponse>>
     {
         private readonly IUserManagerProxy<ApplicationUser> _userManager;
         private readonly IApplicationDbContext _context;
