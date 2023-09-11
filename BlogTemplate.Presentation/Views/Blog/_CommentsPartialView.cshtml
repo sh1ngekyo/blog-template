@@ -1,0 +1,59 @@
+﻿@using BlogTemplate.Domain;
+@using Microsoft.AspNetCore.Identity;
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@model IEnumerable<Comment>
+
+<ul class="no-marker">
+    @foreach (var comment in Model)
+    {
+        <li>
+            <div class="@(comment.ParentId == null ? "card mt-2" : "card mt-2")">
+                <div class="card-body">
+                    <div class="row mb-2">
+                        <div class="col-1">
+                            <div class="mb-2">
+                                @if (comment.ApplicationUser.ThumbnailUrl == null)
+                                {
+                                    <img src="~/thumbnails/default_image.png" class="img-fluid" width="65px" height="65px" />
+                                }
+                                else
+                                {
+                                    <img src="~/thumbnails/@comment.ApplicationUser.ThumbnailUrl" class="img-fluid" width="65px" height="65px" />
+                                }
+                            </div>
+                        </div>
+                        <div class="col-11">
+                            <div class="mb-2">
+                                <h5 class="card-title">@comment.ApplicationUser.UserName</h5>
+                                @{
+                                    if (comment.DateCreated.DateTime == comment.DateModified.DateTime)
+                                    {
+                                        <h6 class="card-subtitle mb-2 text-muted">@comment.DateCreated.DateTime</h6>
+                                    }
+                                    else
+                                    {
+                                        <h6 class="card-subtitle mb-2 text-muted">@comment.DateModified.DateTime - edited</h6>
+                                    }
+                                }
+                            </div>
+                            <p class="card-text">@comment.Content</p>
+                            @if (SignInManager.IsSignedIn(User))
+                            {
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#replyModal" data-comment-id="@comment.CommentId">Reply</button>
+                                var loggedInUser = UserManager.Users.FirstOrDefault(x => x.UserName == User.Identity!.Name);
+                                var loggedInUserRole = await UserManager.GetRolesAsync(loggedInUser!);
+                                if (loggedInUserRole[0] == WebsiteRoles.WebsiteAdmin || loggedInUser!.Id == comment.ApplicationUserId)
+                                {
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editModal" data-comment-id="@comment.CommentId" data-content="@comment.Content">Edit</button>
+                                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-comment-id="@comment.CommentId">Delete</button>
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <partial name="_CommentsPartialView" model="comment.Children" />
+        </li>
+    }
+</ul>

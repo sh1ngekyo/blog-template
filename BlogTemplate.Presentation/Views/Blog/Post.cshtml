@@ -1,0 +1,120 @@
+﻿@using BlogTemplate.Application.DataTransfer.Post;
+@using Microsoft.AspNetCore.Identity;
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@model PostDto
+
+@{
+    ViewData["Title"] = "Post";
+    string thumbnailUrl = "";
+    if (Model.ThumbnailUrl == null)
+    {
+        thumbnailUrl = "/blog/assets/img/home-bg.jpg";
+    }
+    else
+    {
+        thumbnailUrl = "/thumbnails/" + Model.ThumbnailUrl;
+    }
+}
+
+<header class="masthead" style="background-image: url('@thumbnailUrl')">
+    <div class="container position-relative px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <div class="post-heading">
+                    <h1>@Model.Title</h1>
+                    <h2 class="subheading">@Model.ShortDescription</h2>
+                    <span class="meta">
+                        Posted by
+                        <a asp-controller="Blog" asp-action="Profile" asp-route-username="@Model.AuthorName">@Model.AuthorName</a>
+                        on @Model.CreatedDate.ToShortDateString()
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content-->
+<article class="mb-4">
+    <div class="container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-xl">
+                @Html.Raw(Model.Description)
+            </div>
+        </div>
+        <hr />
+        <div class="row mt-2">
+            <div class="col-12">
+                <h5>Comments (@await GetCommentsCount(Model.Comments))</h5>
+                @{
+                    if (SignInManager.IsSignedIn(User))
+                    {
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Post your comment</h5>
+                                <partial name="_CreateComment" model="new CreateCommentDto(){PostId = Model.Id}" />
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <p><a class="link-info" asp-area="Dashboard" asp-controller="User" asp-action="Login">Login</a> or <a class="link-info" asp-area="Dashboard" asp-controller="User" asp-action="Register">Register</a> to add a comment</p>
+                    }
+                }
+            </div>
+
+            @if (Model.Comments.Any())
+            {
+                <div class="col-12 mt-2">
+                    <partial name="_CommentsPartialView" model="Model.Comments" />
+                </div>
+            }
+        </div>
+    </div>
+</article>
+
+<partial name="_CreateReplyModal" model="new CreateCommentDto(){PostId = Model.Id}" />
+<partial name="_EditCommentModal" model="new EditCommentDto(){PostId = Model.Id}" />
+<partial name="_DeleteCommentModal" />
+
+@{
+    async Task<int> GetCommentsCount(IEnumerable<Comment> comments)
+    {
+        var count = comments.Count();
+        foreach (var reply in comments)
+            count += await GetCommentsCount(reply.Children);
+        return count;
+    }
+}
+
+@section scripts {
+    <script>
+        var replyModal = document.getElementById('replyModal');
+        // Send selected comment data to the reply modal.
+        replyModal.addEventListener('show.bs.modal', function (event) {
+            var button = event.relatedTarget;
+            var commentId = button.getAttribute('data-comment-id');
+            replyModal.querySelector('.modal-body #ReplyToCommentId').value = commentId;
+        });
+
+        var editModal = document.getElementById('editModal');
+        // Send selected comment data to the edit modal.
+        editModal.addEventListener('show.bs.modal', function (event) {
+            var button = event.relatedTarget;
+            var commentId = button.getAttribute('data-comment-id');
+            var content = button.getAttribute('data-content');
+            editModal.querySelector('.modal-body #CommentId').value = commentId;
+            editModal.querySelector('.modal-body #Content').value = content;
+        });
+
+        var deleteModal = document.getElementById('deleteModal');
+        // Send selected comment data to the delete modal.
+        deleteModal.addEventListener('show.bs.modal', function (event) {
+            var button = event.relatedTarget;
+            var commentId = button.getAttribute('data-comment-id');
+            deleteModal.querySelector('.modal-body #CommentId').value = commentId;
+        });
+    </script>
+
+}

@@ -1,28 +1,22 @@
-﻿using BlogTemplate.Presentation.Models;
+﻿using BlogTemplate.Application.Features.Home.Queries.GetByPageNumber;
+using BlogTemplate.Domain.Models;
+using BlogTemplate.Presentation.Abstractions.Controller;
 
 using Microsoft.AspNetCore.Mvc;
-
 using System.Diagnostics;
 
 namespace BlogTemplate.Presentation.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        public async Task<IActionResult> Index(int? page)
         {
-            _logger = logger;
-        }
-
-        public IActionResult Index()
-        {
-            return View();
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
+            var response = await Mediator.Send(new GetHomeByPageNumberQuery()
+            {
+                Page = page ?? 1,
+                PageSize = 4
+            });
+            return View(response.Output);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

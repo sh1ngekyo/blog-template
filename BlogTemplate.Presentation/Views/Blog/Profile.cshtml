@@ -1,0 +1,120 @@
+﻿@model ProfileDto
+@using BlogTemplate.Application.DataTransfer.Profile;
+@using X.PagedList
+@using X.PagedList.Mvc.Core
+@using X.PagedList.Web.Common
+
+@{
+    ViewData["Title"] = "Profile";
+    string thumbnailUrl = "";
+    if (Model.ThumbnailUrl == "")
+    {
+        thumbnailUrl = "/blog/assets/img/home-bg.jpg";
+    }
+    else
+    {
+        thumbnailUrl = "/thumbnails/" + Model.ThumbnailUrl;
+    }
+}
+
+
+<!-- Page Header-->
+<header class="masthead" style="background-image: url('@thumbnailUrl')">
+    <div class="container position-relative px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <div class="site-heading">
+                    <h1>@Model.Title</h1>
+                    <span class="subheading">@Model.ShortDescription</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="container px-4 px-lg-5">
+    <div class="container-fluid">
+        <div class="card">
+            <div class="card-header bg-primary">
+                <h4 class="card-title text-white">@Model.UserName</h4>
+            </div>
+            <div class="card-body">
+                <div class="row mb-2">
+                    <div class="col-3">
+                        <div class="mb-2">
+                            @{
+                                if (Model.UserPicUrl == null)
+                                {
+                                    <img src="~/thumbnails/default_image.png" class="img-fluid" id="thumbnail" />
+                                }
+                                else
+                                {
+                                    <img src="~/thumbnails/@Model.UserPicUrl" class="img-fluid" id="thumbnail" />
+                                }
+                            }
+                        </div>
+                    </div>
+                    <div class="col-9">
+                        <div class="mb-2">
+                            <p>@Model.FirstName @Model.LastName</p>
+                        </div>
+                        <p>@Html.Raw(Model.About)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@{
+    if (Model.Posts!.Count > 0)
+    {
+
+        <div class="container px-4 px-lg-5">
+            <div class="container-fluid">
+                <div class="card">
+                    <div class="card-header bg-primary">
+                        <h4 class="card-title text-white">Posts from @Model.UserName</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div class="col-md-10 col-lg-8 col-xl-7">
+                    @foreach (var post in Model.Posts!)
+                    {
+                        <!-- Post preview-->
+                        <div class="post-preview">
+                            <a asp-controller="Blog" asp-action="Post" asp-route-slug="@post.Slug">
+                                <h2 class="post-title">@post.Title</h2>
+                                <h3 class="post-subtitle">@post.ShortDescription</h3>
+                                @{
+                                    if (post.ThumbnailUrl is not null)
+                                    {
+                                        <div style="background:url('/thumbnails/@post.ThumbnailUrl'); background-size:contain; background-repeat:no-repeat; width: 100%; height: 200px;"></div>
+                                    }
+                                }
+                            </a>
+
+                            <p class="post-meta">
+                                Posted on @post.CreatedDate.ToShortDateString()
+                            </p>
+                        </div>
+                        <!-- Divider-->
+                        <hr class="my-4" />
+                    }
+
+                    Page @(Model?.Posts.PageCount < Model?.Posts.PageNumber ? 0 : Model?.Posts.PageNumber) of @Model?.Posts.PageCount
+                    @Html.PagedListPager(Model?.Posts,page => Url.Action("Profile", "Blog",
+                    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }),
+                    new PagedListRenderOptions()
+                    {
+                        ContainerDivClasses = new List<string> {"d-flex justify-content-start mb-4"},
+                        UlElementClasses = new List<string> {"pagination"},
+                        LiElementClasses = new List<string> {"btn btn-primary mx-1 text-uppercase"},
+                        ActiveLiElementClass =  "active"
+                    })
+                </div>
+            </div>
+        </div>
+    }
+}
+

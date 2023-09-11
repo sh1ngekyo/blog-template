@@ -1,0 +1,58 @@
+﻿@using BlogTemplate.Application.DataTransfer.User;
+@model UserDto
+
+@{
+    ViewData["Title"] = "Profile";
+}
+
+<div class="container-fluid">
+    <div class="card">
+        <div class="card-header bg-primary">
+            <h4 class="card-title text-white">Your Profile</h4>
+        </div>
+        <div class="card-body">
+            <div class="row mb-2">
+                <div class="col-3">
+                    <div class="mb-2">
+                        @{
+                            if (Model.ThumbnailUrl == null)
+                            {
+                                <img src="~/thumbnails/default_image.png" class="img-fluid" id="thumbnail" />
+                            }
+                            else
+                            {
+                                <img src="~/thumbnails/@Model.ThumbnailUrl" class="img-fluid" id="thumbnail" />
+                            }
+                        }
+                    </div>
+                </div>
+                <div class="col-9">
+                    <div class="mb-2">
+                        <label>UserName</label>
+                        <input type="text" asp-for="UserName" class="form-control" disabled />
+                    </div>
+                    <div class="mb-2">
+                        <label>FirstName</label>
+                        <input type="text" asp-for="FirstName" class="form-control" disabled />
+                    </div>
+                    <div class="mb-2">
+                        <label>LastName</label>
+                        <input type="text" asp-for="LastName" class="form-control" disabled />
+                    </div>
+                    <div class="mb-2">
+                        <label>Email</label>
+                        <input type="text" asp-for="Email" class="form-control" disabled />
+                    </div>
+                    <p>@Html.Raw(Model.About)</p>
+                </div>
+            </div>
+
+            <div class="mb-2">
+                <a asp-action="Edit" asp-controller="Profile" class="btn btn-primary w-100">Edit</a>
+            </div>
+            <div class="mb-2">
+                <a asp-action="ResetPassword" asp-controller="Profile" class="btn btn-primary w-100">Reset password</a>
+            </div>
+        </div>
+    </div>
+</div>

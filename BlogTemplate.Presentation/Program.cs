@@ -1,3 +1,6 @@
+using AspNetCoreHero.ToastNotification;
+using AspNetCoreHero.ToastNotification.Extensions;
+
 using BlogTemplate.Domain.Models;
 using BlogTemplate.Infrastructure.Data;
 using BlogTemplate.Infrastructure;
@@ -5,6 +8,7 @@ using BlogTemplate.Infrastructure;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using BlogTemplate.Presentation.Utills;
 using BlogTemplate.Application;
 using BlogTemplate.Application.Abstractions.Database;
 using BlogTemplate.Application.Common.Mappings;
@@ -35,7 +39,10 @@ builder.Services.AddAutoMapper(config =>
 });
 
 builder.Services.AddApplication();
+builder.Services.AddSingleton<ImageUtility>();
 builder.Services.AddScoped<IDbInitializer, DbInitializer>();
+
+builder.Services.AddNotyf(config => { config.DurationInSeconds = 10; config.IsDismissable = true; config.Position = NotyfPosition.BottomRight; });
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
@@ -52,6 +59,8 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+app.UseNotyf();
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
@@ -62,8 +71,12 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
+    name: "area",
+    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+
+app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}");
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
 
@@ -75,4 +88,3 @@ void DataSeeding()
         DbInitialize.Initialize();
     }
 }
-
