@@ -2,22 +2,14 @@
 
 using BlogTemplate.Application.Abstractions.Enums;
 using BlogTemplate.Application.Abstractions;
-using BlogTemplate.Application.Common.Exceptions;
-using BlogTemplate.Application.DataTransfer.Page;
 using BlogTemplate.Application.DataTransfer.User;
 using BlogTemplate.Domain.Models;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BlogTemplate.Application.Features.User.Queries.GetByName
 {
-    public class GetUserByNameQueryHandler : IRequestHandler<GetUserByNameQuery, Result<UserDto>>
+    public class GetUserByNameQueryHandler 
+        : IRequestHandler<GetUserByNameQuery, Result<UserDto>>
     {
         private readonly IUserManagerProxy<ApplicationUser> _userManager;
         private readonly IMapper _mapper;
