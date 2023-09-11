@@ -1,0 +1,77 @@
+﻿@using BlogTemplate.Application.DataTransfer.Home;
+@using X.PagedList
+@using X.PagedList.Mvc.Core
+@using X.PagedList.Web.Common
+
+@model HomeDto
+
+@{
+    ViewData["Title"] = "Home Page";
+    string thumbnailUrl = "";
+    if (Model.ThumbnailUrl == "")
+    {
+        thumbnailUrl = "/blog/assets/img/home-bg.jpg";
+    }
+    else
+    {
+        thumbnailUrl = "/thumbnails/" + Model.ThumbnailUrl;
+    }
+}
+
+
+<!-- Page Header-->
+<header class="masthead" style="background-image: url('@thumbnailUrl')">
+    <div class="container position-relative px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <div class="site-heading">
+                    <h1>@Model.Title</h1>
+                    <span class="subheading">@Model.ShortDescription</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="container px-4 px-lg-5">
+    <div class="row gx-4 gx-lg-5 justify-content-center">
+        <div class="col-md-10 col-lg-8 col-xl-7">
+            @foreach (var post in Model.Posts!)
+            {
+                <!-- Post preview-->
+                <div class="post-preview">
+                    <a asp-controller="Blog" asp-action="Post" asp-route-slug="@post.Slug">
+                        <h2 class="post-title">@post.Title</h2>
+                        <h3 class="post-subtitle">@post.ShortDescription</h3>
+                        @{
+                            if (post.ThumbnailUrl is not null)
+                            {
+                                <div style="background:url('/thumbnails/@post.ThumbnailUrl'); background-size:contain; background-repeat:no-repeat; width: 500px; height: 300px;"></div>
+                            }
+                        }
+                    </a>
+                    
+                    <p class="post-meta">
+                        Posted by
+                        <a asp-controller="Blog" asp-action="Profile" asp-route-username="@post.ApplicationUser.UserName">@post.ApplicationUser!.FirstName @post.ApplicationUser!.LastName</a>
+                        on @post.CreatedDate.ToShortDateString()
+                    </p>
+                </div>
+                <!-- Divider-->
+                <hr class="my-4" />
+            }
+
+            Page @(Model?.Posts.PageCount < Model?.Posts.PageNumber ? 0 : Model?.Posts.PageNumber) of @Model?.Posts.PageCount
+            @Html.PagedListPager(Model?.Posts,page => Url.Action("Index",
+            new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }),
+            new PagedListRenderOptions()
+            {
+            ContainerDivClasses = new List<string> {"d-flex justify-content-start mb-4"},
+            UlElementClasses = new List<string> {"pagination"},
+            LiElementClasses = new List<string> {"btn btn-primary mx-1 text-uppercase"},
+            ActiveLiElementClass =  "active"
+            })
+        </div>
+    </div>
+</div>
+

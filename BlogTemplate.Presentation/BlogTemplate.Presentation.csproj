@@ -17,6 +17,7 @@
     </PackageReference>
     <PackageReference Include="Microsoft.Identity.Web" Version="2.13.4" />
     <PackageReference Include="Microsoft.Identity.Web.UI" Version="2.13.4" />
+    <PackageReference Include="X.PagedList.Mvc.Core" Version="8.4.7" />
   </ItemGroup>
 
   <ItemGroup>
