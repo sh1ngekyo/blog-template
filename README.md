@@ -2,7 +2,7 @@
 [![Build](https://github.com/sh1ngekyo/blog-template/actions/workflows/build.yml/badge.svg)](https://github.com/sh1ngekyo/blog-template/actions/workflows/build.yml)
 [![Tests](https://github.com/sh1ngekyo/blog-template/actions/workflows/tests.yml/badge.svg)](https://github.com/sh1ngekyo/blog-template/actions/workflows/tests.yml)
 
-This template can be used to create a blog/forum based on Asp.net core (API or MVC)
+This template can be used to create a blog/forum based on Asp.net core (API or MVC). Currently presentation layer implemented with MVC.
 
 # Features:
 1. Role based Auth
@@ -16,6 +16,15 @@ This template can be used to create a blog/forum based on Asp.net core (API or M
 1. Move front-end to React/Angular/Vue
 2. Implement tags & search for posts
 3. Move from localdb to postgresql/mssql server
+
+# Packages:
+1. EFCore
+2. MediatR
+4. AutoMapper
+5. FluentValidation
+6. ToastNotification
+7. X.PagedList
+8. NSubstitude (Tests)
 
 # Download & setup:
 1. Download/Clone: `git clone https://github.com/sh1ngekyo/blog-template.git`
