@@ -1,21 +1,12 @@
-﻿using AutoMapper;
-
-using BlogTemplate.Application.Abstractions;
+﻿using BlogTemplate.Application.Abstractions;
 using BlogTemplate.Application.Abstractions.Database;
 using BlogTemplate.Application.Abstractions.Enums;
-using BlogTemplate.Application.Common.Exceptions;
-using BlogTemplate.Application.DataTransfer.Post;
 using MediatR;
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BlogTemplate.Application.Features.Comments.Commands.Create
 {
-    public class CreateCommentCommandHandler : IRequestHandler<CreateCommentCommand, Result<CommentsBaseCommandResponse>>
+    public class CreateCommentCommandHandler 
+        : IRequestHandler<CreateCommentCommand, Result<CommentsBaseCommandResponse>>
     {
         private readonly IApplicationDbContext _context;
         public CreateCommentCommandHandler(IApplicationDbContext context) =>
