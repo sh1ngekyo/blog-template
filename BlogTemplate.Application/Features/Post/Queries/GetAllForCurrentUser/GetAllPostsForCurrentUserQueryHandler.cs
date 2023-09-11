@@ -3,26 +3,16 @@ using BlogTemplate.Application.Abstractions.Database;
 using BlogTemplate.Application.Abstractions.Enums;
 using BlogTemplate.Application.Abstractions;
 using BlogTemplate.Application.DataTransfer.Post;
-using BlogTemplate.Application.Features.Post.Queries.GetById;
 using MediatR;
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using X.PagedList;
 using BlogTemplate.Domain.Models;
 using BlogTemplate.Domain;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System.Security.Claims;
-using BlogTemplate.Application.DataTransfer.User;
 using AutoMapper.QueryableExtensions;
 
 namespace BlogTemplate.Application.Features.Post.Queries.GetAllForCurrentUser
 {
-    public class GetAllPostsForCurrentUserQueryHandler : IRequestHandler<GetAllPostsForCurrentUserQuery, Result<List<PostDto>>>
+    public class GetAllPostsForCurrentUserQueryHandler 
+        : IRequestHandler<GetAllPostsForCurrentUserQuery, Result<List<PostDto>>>
     {
         private readonly IApplicationDbContext _context;
         private readonly IMapper _mapper;
