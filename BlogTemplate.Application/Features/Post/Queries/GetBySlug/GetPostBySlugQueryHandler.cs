@@ -3,23 +3,16 @@
 using BlogTemplate.Application.Abstractions;
 using BlogTemplate.Application.Abstractions.Database;
 using BlogTemplate.Application.Abstractions.Enums;
-using BlogTemplate.Application.Common.Exceptions;
-using BlogTemplate.Application.DataTransfer.Page;
 using BlogTemplate.Application.DataTransfer.Post;
 
 using MediatR;
 
 using Microsoft.EntityFrameworkCore;
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace BlogTemplate.Application.Features.Post.Queries.GetBySlug
 {
-    public class GetPostBySlugQueryHandler : IRequestHandler<GetPostBySlugQuery, Result<PostDto>>
+    public class GetPostBySlugQueryHandler 
+        : IRequestHandler<GetPostBySlugQuery, Result<PostDto>>
     {
         private readonly IApplicationDbContext _context;
         private readonly IMapper _mapper;
