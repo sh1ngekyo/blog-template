@@ -1,27 +1,17 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
 
-using Azure;
-
 using BlogTemplate.Application.DataTransfer.Post;
 using BlogTemplate.Application.Features.Comments.Commands.Create;
 using BlogTemplate.Application.Features.Comments.Commands.Delete;
 using BlogTemplate.Application.Features.Comments.Commands.Update;
 using BlogTemplate.Application.Features.Comments.Queries.GetAllByPostId;
-using BlogTemplate.Application.Features.Post.Queries.GetById;
 using BlogTemplate.Application.Features.Post.Queries.GetBySlug;
 using BlogTemplate.Application.Features.Profile.Queries.GetByName;
 using BlogTemplate.Application.Features.User.Queries.GetByName;
-using BlogTemplate.Domain.Models;
-using BlogTemplate.Infrastructure.Data;
-using BlogTemplate.Infrastructure.Migrations;
 using BlogTemplate.Presentation.Abstractions.Controller;
 
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-
-using X.PagedList;
 
 namespace BlogTemplate.Presentation.Controllers
 {
