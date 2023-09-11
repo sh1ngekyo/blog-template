@@ -1,0 +1,35 @@
+﻿@using BlogTemplate.Application.DataTransfer.Post;
+
+@model EditCommentDto
+
+<div class="modal fade" id="editModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-primary" id="editModalLabel">Edit this comment ...</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <form asp-action="EditComment" asp-controller="Blog" id="EditCommentForm">
+                        <input asp-for="CommentId" hidden />
+                        <input asp-for="PostId" hidden />
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-floating">
+                                    <textarea asp-for="Content" class="form-control" placeholder="Edit a comment here"></textarea>
+                                    <label asp-for="Content"></label>
+                                    <span asp-validation-for="Content" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                @*https://www.w3schools.com/tags/att_button_form.asp *@
+                <input type="submit" class="btn btn-outline-primary" value="Edit" form="EditCommentForm">
+            </div>
+        </div>
+    </div>
+</div>
