@@ -1,29 +1,18 @@
-﻿using AutoMapper;
-
-using BlogTemplate.Application.Abstractions;
+﻿using BlogTemplate.Application.Abstractions;
 using BlogTemplate.Application.Abstractions.Database;
 using BlogTemplate.Application.Abstractions.Enums;
-using BlogTemplate.Application.Common.Exceptions;
-using BlogTemplate.Application.DataTransfer.Page;
 using BlogTemplate.Application.DataTransfer.Profile;
 using BlogTemplate.Domain.Models;
 
 using MediatR;
-
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using X.PagedList;
 
 namespace BlogTemplate.Application.Features.Profile.Queries.GetByName
 {
-    public class GetProfileByUserNameQueryHandler : IRequestHandler<GetProfileByUserNameQuery, Result<ProfileDto>>
+    public class GetProfileByUserNameQueryHandler 
+        : IRequestHandler<GetProfileByUserNameQuery, Result<ProfileDto>>
     {
         private readonly IApplicationDbContext _context;
         private readonly IUserManagerProxy<ApplicationUser> _userManager;
