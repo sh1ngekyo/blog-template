@@ -1,22 +1,12 @@
-﻿using AutoMapper;
-using BlogTemplate.Application.Abstractions.Database;
-using BlogTemplate.Application.Abstractions.Enums;
+﻿using BlogTemplate.Application.Abstractions.Enums;
 using BlogTemplate.Application.Abstractions;
-using BlogTemplate.Application.Features.Page.Commands.Update;
 using MediatR;
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
 using BlogTemplate.Domain.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace BlogTemplate.Application.Features.Profile.Commands.Update
 {
-    public class UpdateProfileCommandHandler : IRequestHandler<UpdateProfileCommand, Result<UpdateProfileCommandResponse>>
+    public class UpdateProfileCommandHandler 
+        : IRequestHandler<UpdateProfileCommand, Result<UpdateProfileCommandResponse>>
     {
         private readonly IUserManagerProxy<ApplicationUser> _userManager;
         public UpdateProfileCommandHandler(IUserManagerProxy<ApplicationUser> userManager) =>
