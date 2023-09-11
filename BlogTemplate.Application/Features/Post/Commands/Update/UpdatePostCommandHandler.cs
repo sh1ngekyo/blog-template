@@ -1,21 +1,13 @@
 ﻿using BlogTemplate.Application.Abstractions.Database;
 using BlogTemplate.Application.Abstractions.Enums;
 using BlogTemplate.Application.Abstractions;
-using BlogTemplate.Domain.Models;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using BlogTemplate.Application.Features.Page.Commands.Update;
 
 namespace BlogTemplate.Application.Features.Post.Commands.Update
 {
-    public class UpdatePostCommandHandler : IRequestHandler<UpdatePostCommand, Result<UpdatePostCommandResponse>>
+    public class UpdatePostCommandHandler 
+        : IRequestHandler<UpdatePostCommand, Result<UpdatePostCommandResponse>>
     {
         private readonly IApplicationDbContext _context;
         public UpdatePostCommandHandler(IApplicationDbContext context) =>
