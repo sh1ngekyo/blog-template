@@ -1,8 +1,4 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
-
-using Azure;
-
-using BlogTemplate.Application.DataTransfer.Page;
 using BlogTemplate.Application.DataTransfer.Post;
 using BlogTemplate.Application.Features.Post.Commands.Create;
 using BlogTemplate.Application.Features.Post.Commands.Delete;
@@ -11,16 +7,11 @@ using BlogTemplate.Application.Features.Post.Queries.GetAllForCurrentUser;
 using BlogTemplate.Application.Features.Post.Queries.GetById;
 using BlogTemplate.Application.Features.User.Queries.GetByName;
 using BlogTemplate.Domain;
-using BlogTemplate.Domain.Models;
-using BlogTemplate.Infrastructure.Data;
 using BlogTemplate.Presentation.Abstractions.Controller;
 using BlogTemplate.Presentation.Utills;
 
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Hosting;
 
 using X.PagedList;
 

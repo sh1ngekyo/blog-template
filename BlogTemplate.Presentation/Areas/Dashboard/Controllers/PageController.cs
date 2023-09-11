@@ -3,15 +3,11 @@
 using BlogTemplate.Application.DataTransfer.Page;
 using BlogTemplate.Application.Features.Page.Commands.Update;
 using BlogTemplate.Application.Features.Page.Queries.GetBySlug;
-using BlogTemplate.Infrastructure.Data;
 using BlogTemplate.Presentation.Abstractions.Controller;
 using BlogTemplate.Presentation.Utills;
 
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Hosting;
 
 namespace BlogTemplate.Presentation.Areas.Dashboard.Controllers
 {

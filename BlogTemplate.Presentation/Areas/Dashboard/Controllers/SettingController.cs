@@ -1,21 +1,12 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
-
-using Azure.Core;
-
-using BlogTemplate.Application.DataTransfer.Page;
 using BlogTemplate.Application.DataTransfer.Settings;
-using BlogTemplate.Application.Features.Page.Commands.Update;
 using BlogTemplate.Application.Features.Settings.Commands.Update;
 using BlogTemplate.Application.Features.Settings.Queries.GetAll;
-using BlogTemplate.Domain.Models;
-using BlogTemplate.Infrastructure.Data;
 using BlogTemplate.Presentation.Abstractions.Controller;
 using BlogTemplate.Presentation.Utills;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Hosting;
 
 namespace BlogTemplate.Presentation.Areas.Dashboard.Controllers
 {

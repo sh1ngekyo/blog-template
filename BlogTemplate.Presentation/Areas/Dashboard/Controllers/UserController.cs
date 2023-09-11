@@ -7,15 +7,11 @@ using BlogTemplate.Application.Features.Auth.Commands.SignUp;
 using BlogTemplate.Application.Features.User.Commands.ChangeRole;
 using BlogTemplate.Application.Features.User.Commands.Delete;
 using BlogTemplate.Application.Features.User.Queries.GetAll;
-using BlogTemplate.Domain;
-using BlogTemplate.Domain.Models;
 using BlogTemplate.Presentation.Abstractions.Controller;
 using BlogTemplate.Presentation.Utills;
 
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace BlogTemplate.Presentation.Areas.Dashboard.Controllers
 {
@@ -77,7 +73,6 @@ namespace BlogTemplate.Presentation.Areas.Dashboard.Controllers
             return RedirectToAction("Index");
         }
 
-        //[Authorize(Roles ="Admin")]
         [HttpGet("Register")]
         public IActionResult Register()
         {
@@ -88,7 +83,6 @@ namespace BlogTemplate.Presentation.Areas.Dashboard.Controllers
             return RedirectToAction("Index", "Post", new { area = "Dashboard" });
         }
 
-        //[Authorize(Roles = "Admin")]
         [HttpPost("Register")]
         public async Task<IActionResult> Register(SignUpDto signUpDto)
         {

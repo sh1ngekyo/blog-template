@@ -1,25 +1,15 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
 
-using BlogTemplate.Application.DataTransfer.Page;
 using BlogTemplate.Application.DataTransfer.Profile;
-using BlogTemplate.Application.Features.Page.Commands.Update;
 using BlogTemplate.Application.Features.Profile.Commands.ResetPassword;
 using BlogTemplate.Application.Features.Profile.Commands.Update;
-using BlogTemplate.Application.Features.Profile.Queries.GetByName;
 using BlogTemplate.Application.Features.Profile.Queries.GetMyProfileByName;
 using BlogTemplate.Application.Features.User.Queries.GetByName;
-using BlogTemplate.Domain.Models;
 using BlogTemplate.Presentation.Abstractions.Controller;
 using BlogTemplate.Presentation.Utills;
 
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Hosting;
-
-using System.Data;
 
 namespace BlogTemplate.Presentation.Areas.Dashboard.Controllers
 {
