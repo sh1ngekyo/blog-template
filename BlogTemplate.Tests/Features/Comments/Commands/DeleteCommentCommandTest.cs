@@ -1,13 +1,7 @@
 ﻿using BlogTemplate.Application.Abstractions.Enums;
 using BlogTemplate.Application.Features.Comments.Commands.Delete;
-using BlogTemplate.Application.Features.Comments.Commands.Update;
 using BlogTemplate.Tests.Common;
 using BlogTemplate.Tests.Common.Extensions.DbContext.Comments;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using Xunit;
 

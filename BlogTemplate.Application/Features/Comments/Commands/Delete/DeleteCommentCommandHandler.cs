@@ -1,25 +1,15 @@
-﻿using AutoMapper;
-
-using BlogTemplate.Application.Abstractions;
+﻿using BlogTemplate.Application.Abstractions;
 using BlogTemplate.Application.Abstractions.Database;
 using BlogTemplate.Application.Abstractions.Enums;
-using BlogTemplate.Application.Common.Exceptions;
-using BlogTemplate.Application.Features.Comments.Commands.Update;
 using BlogTemplate.Domain.Models;
 using MediatR;
 
 using Microsoft.EntityFrameworkCore;
 
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.Design;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace BlogTemplate.Application.Features.Comments.Commands.Delete
 {
-    public class DeleteCommentCommandHandler : IRequestHandler<DeleteCommentCommand, Result<CommentsBaseCommandResponse>>
+    public class DeleteCommentCommandHandler 
+        : IRequestHandler<DeleteCommentCommand, Result<CommentsBaseCommandResponse>>
     {
         private readonly IApplicationDbContext _context;
         public DeleteCommentCommandHandler(IApplicationDbContext context) =>
