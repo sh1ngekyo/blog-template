@@ -1,23 +1,13 @@
-﻿using AutoMapper;
-using BlogTemplate.Application.Abstractions.Enums;
+﻿using BlogTemplate.Application.Abstractions.Enums;
 using BlogTemplate.Application.Abstractions;
-using BlogTemplate.Application.Features.User.Commands.ChangeRole;
 using BlogTemplate.Domain.Models;
-using BlogTemplate.Domain;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using BlogTemplate.Application.Abstractions.Database;
 
 namespace BlogTemplate.Application.Features.Post.Commands.Create
 {
-    public class CreatePostCommandHandler : IRequestHandler<CreatePostCommand, Result>
+    public class CreatePostCommandHandler 
+        : IRequestHandler<CreatePostCommand, Result>
     {
         private readonly IUserManagerProxy<ApplicationUser> _userManager;
         private readonly IApplicationDbContext _context;
