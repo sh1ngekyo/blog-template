@@ -29,7 +29,7 @@ This template can be used to create a blog/forum based on Asp.net core (API or M
 # Download & setup:
 1. Download/Clone: `git clone https://github.com/sh1ngekyo/blog-template.git`
 2. Apply Migration in your package manager: `Update-Database` or use dotnet cli.
-3. Run & configure your site in Dashboard. Default Login: Admin, Default Password: Admin@0012. Change default account settings in DbInitializer.
+3. Run & configure your site in Dashboard. Default Login: Admin, Default Password: Admin@0011. Change default account settings in DbInitializer.
 
 # Blog example/Features:
 
