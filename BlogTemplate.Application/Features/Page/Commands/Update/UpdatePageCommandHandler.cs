@@ -1,19 +1,13 @@
-﻿using AutoMapper;
-using BlogTemplate.Application.Abstractions.Database;
+﻿using BlogTemplate.Application.Abstractions.Database;
 using BlogTemplate.Application.Abstractions.Enums;
 using BlogTemplate.Application.Abstractions;
 using MediatR;
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
 namespace BlogTemplate.Application.Features.Page.Commands.Update
 {
-    public class UpdatePageCommandHandler : IRequestHandler<UpdatePageCommand, Result<UpdatePageCommandResponse>>
+    public class UpdatePageCommandHandler 
+        : IRequestHandler<UpdatePageCommand, Result<UpdatePageCommandResponse>>
     {
         private readonly IApplicationDbContext _context;
         public UpdatePageCommandHandler(IApplicationDbContext context) =>
