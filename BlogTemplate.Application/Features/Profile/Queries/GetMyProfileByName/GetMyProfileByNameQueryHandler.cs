@@ -6,7 +6,8 @@ using BlogTemplate.Application.DataTransfer.User;
 
 namespace BlogTemplate.Application.Features.Profile.Queries.GetMyProfileByName
 {
-    public class GetMyProfileByNameQueryHandler : IRequestHandler<GetMyProfileByNameQuery, Result<UserDto>>
+    public class GetMyProfileByNameQueryHandler 
+        : IRequestHandler<GetMyProfileByNameQuery, Result<UserDto>>
     {
         private readonly IUserManagerProxy<ApplicationUser> _userManager;
         public GetMyProfileByNameQueryHandler(IUserManagerProxy<ApplicationUser> userManager) =>
