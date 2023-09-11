@@ -90,6 +90,6 @@ This template can be used to create a blog/forum based on Asp.net core (API or M
 
 ## Comments
 <details> 
-  <summary><h3>Edit</h3></summary>
+  <summary><h3>View from user with Author role</h3></summary>
   <img src="https://github.com/sh1ngekyo/blog-template/blob/master/Docs/Images/Comments.png">
 </details>
