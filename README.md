@@ -1,6 +1,6 @@
 # blog-template
-[![Build](https://github.com/sh1ngekyo/blog-template/actions/workflows/build.yml/badge.svg)](https://github.com/sh1ngekyo/blog-template/actions/workflows/build.yml)
-[![Tests](https://github.com/sh1ngekyo/blog-template/actions/workflows/tests.yml/badge.svg)](https://github.com/sh1ngekyo/blog-template/actions/workflows/tests.yml)
+![Build](https://img.shields.io/github/actions/workflow/status/sh1ngekyo/blog-template/build.yml?style=for-the-badge&label=Build&labelColor=black)
+![Tests](https://img.shields.io/github/actions/workflow/status/sh1ngekyo/blog-template/tests.yml?style=for-the-badge&label=Tests&labelColor=black)
 
 This template can be used to create a blog/forum based on Asp.net core (API or MVC). Currently presentation layer implemented with MVC.
 
@@ -18,7 +18,7 @@ This template can be used to create a blog/forum based on Asp.net core (API or M
 3. Move from localdb to postgresql/mssql server
 
 # Packages:
-1. EFCore
+1. EF Core
 2. MediatR
 4. AutoMapper
 5. FluentValidation
