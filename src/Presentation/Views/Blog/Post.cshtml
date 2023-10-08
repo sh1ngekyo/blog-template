@@ -46,14 +46,14 @@
         <hr />
         <div class="row mt-2">
             <div class="col-12">
-                <h5>Comments (@await GetCommentsCount(Model.Comments))</h5>
+                <h5>Comments (@await GetCommentsCount(Model?.Comments))</h5>
                 @{
                     if (SignInManager.IsSignedIn(User))
                     {
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title">Post your comment</h5>
-                                <partial name="_CreateComment" model="new CreateCommentDto(){PostId = Model.Id}" />
+                                <partial name="_CreateComment" model="new CreateCommentDto(){PostId = Model!.Id}" />
                             </div>
                         </div>
                     }
@@ -64,7 +64,7 @@
                 }
             </div>
 
-            @if (Model.Comments.Any())
+            @if (Model!.Comments!.Any())
             {
                 <div class="col-12 mt-2">
                     <partial name="_CommentsPartialView" model="Model.Comments" />
@@ -79,8 +79,10 @@
 <partial name="_DeleteCommentModal" />
 
 @{
-    async Task<int> GetCommentsCount(IEnumerable<Comment> comments)
+    async Task<int> GetCommentsCount(IEnumerable<Comment>? comments)
     {
+        if (comments is null)
+            return 0;
         var count = comments.Count();
         foreach (var reply in comments)
             count += await GetCommentsCount(reply.Children);

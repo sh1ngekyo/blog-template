@@ -23,6 +23,7 @@ namespace BlogTemplate.Infrastructure
 
         public void Initialize()
         {
+            string s = null;
             if (!_roleManager.RoleExistsAsync(WebsiteRoles.WebsiteAdmin).GetAwaiter().GetResult())
             {
                 _roleManager.CreateAsync(new IdentityRole(WebsiteRoles.WebsiteAdmin)).GetAwaiter().GetResult();

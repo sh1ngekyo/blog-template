@@ -10,8 +10,8 @@
         <div class="col-1">
             <div class="mb-2">
                 @{
-                    var user = await UserManager.FindByNameAsync(User.Identity.Name);
-                    if (user.ThumbnailUrl == null)
+                    var user = await UserManager.FindByNameAsync(User.Identity?.Name!);
+                    if (user?.ThumbnailUrl == null)
                     {
                         <img src="~/thumbnails/default_image.png" class="img-fluid" width="65px" height="65px" />
                     }

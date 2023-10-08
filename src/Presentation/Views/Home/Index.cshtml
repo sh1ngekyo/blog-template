@@ -53,8 +53,8 @@
                     
                     <p class="post-meta">
                         Posted by
-                        <a asp-controller="Blog" asp-action="Profile" asp-route-username="@post.ApplicationUser.UserName">@post.ApplicationUser!.FirstName @post.ApplicationUser!.LastName</a>
-                        on @post.CreatedDate.ToShortDateString()
+                        <a asp-controller="Blog" asp-action="Profile" asp-route-username="@post.ApplicationUser!.UserName">@post.ApplicationUser!.FirstName @post.ApplicationUser!.LastName</a>
+                        on @post!.CreatedDate.ToShortDateString()
                     </p>
                 </div>
                 <!-- Divider-->

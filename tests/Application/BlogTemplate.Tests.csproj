@@ -1,11 +1,12 @@
-<Project Sdk="Microsoft.NET.Sdk">
-
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  
   <PropertyGroup>
+    <RootNamespace>BlogTemplate.Tests</RootNamespace>
+    <AssemblyName>BlogTemplate.Tests</AssemblyName>
+    <IsPackable>false</IsPackable>
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-
-    <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>
@@ -25,7 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BlogTemplate.Infrastructure\BlogTemplate.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\src\Infrastructure\BlogTemplate.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

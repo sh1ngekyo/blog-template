@@ -1,11 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
-
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-  </PropertyGroup>
-
+    <RootNamespace>BlogTemplate.Presentation</RootNamespace>
+    <AssemblyName>BlogTemplate.Presentation</AssemblyName>
+      <TargetFramework>net7.0</TargetFramework>
+      <ImplicitUsings>enable</ImplicitUsings>
+      <Nullable>enable</Nullable>
+    </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="AspNetCoreHero.ToastNotification" Version="1.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.10" />
@@ -22,9 +22,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BlogTemplate.Application\BlogTemplate.Application.csproj" />
-    <ProjectReference Include="..\BlogTemplate.Domain\BlogTemplate.Domain.csproj" />
-    <ProjectReference Include="..\BlogTemplate.Infrastructure\BlogTemplate.Infrastructure.csproj" />
+    <ProjectReference Include="..\Application\BlogTemplate.Application.csproj" />
+    <ProjectReference Include="..\Domain\BlogTemplate.Domain.csproj" />
+    <ProjectReference Include="..\Infrastructure\BlogTemplate.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
