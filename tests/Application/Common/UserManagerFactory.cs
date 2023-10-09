@@ -74,9 +74,9 @@ public class UserManagerFactory
                     });
         userManager.AddToRoleAsync(Arg.Any<ApplicationUser>(), Arg.Any<string>()).Returns(true);
         userManager.RemoveFromRoleAsync(Arg.Any<ApplicationUser>(), Arg.Any<string>()).Returns(true);
-        userManager.FindByUserNameAsync(Arg.Any<string>()).Returns(x => 
+        userManager.FindByUserNameAsync(Arg.Any<string>()).Returns(x =>
             Users.TryGetValue(x[0].ToString()!, out var user) ? user : null);
-        userManager.FindByIdAsync(Arg.Any<string>()).Returns(x => 
+        userManager.FindByIdAsync(Arg.Any<string>()).Returns(x =>
             Users.FirstOrDefault(item => item.Value.Id == x[0].ToString()).Value);
         userManager.DeleteAsync(Arg.Any<ApplicationUser>()).Returns(true);
         userManager.UpdateAsync(Arg.Any<ApplicationUser>()).Returns(true);

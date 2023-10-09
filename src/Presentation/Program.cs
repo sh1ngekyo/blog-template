@@ -15,7 +15,7 @@ using Newtonsoft.Json;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews()
-            .AddNewtonsoftJson(options => 
+            .AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");

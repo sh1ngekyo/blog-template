@@ -91,7 +91,7 @@ public class UpdateSettingsCommandTest : TestDbContextCommandBase
         });
 
         var response = await validationBehavior.Handle(
-            updateSettingsCommand, 
+            updateSettingsCommand,
             async () => await updateSettingsCommandHandler.Handle(updateSettingsCommand, CancellationToken.None), CancellationToken.None);
 
 

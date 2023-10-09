@@ -91,7 +91,7 @@ public class UpdatePageCommandTest : TestDbContextCommandBase
         });
 
         var response = await validationBehavior.Handle(
-            updatePageCommand, 
+            updatePageCommand,
             async () => await updatePageCommandHandler.Handle(updatePageCommand, CancellationToken.None), CancellationToken.None);
 
 
