@@ -1,7 +1,6 @@
-﻿namespace BlogTemplate.Application.Features.Post.Commands.Delete
+﻿namespace BlogTemplate.Application.Features.Post.Commands.Delete;
+
+public class DeletePostCommandResponse
 {
-    public class DeletePostCommandResponse
-    {
-        public string? RemoveThumbnailUrl { get; set; }
-    }
+    public string? RemoveThumbnailUrl { get; set; }
 }

@@ -7,55 +7,54 @@ using BlogTemplate.Tests.Common;
 
 using Xunit;
 
-namespace BlogTemplate.Tests.Features.Post.Queries
+namespace BlogTemplate.Tests.Features.Post.Queries;
+
+[Collection("PostQueryCollection")]
+public class GetAllPostsForCurrentUserQueryTest
 {
-    [Collection("PostQueryCollection")]
-    public class GetAllPostsForCurrentUserQueryTest
+    private readonly IMapper _mapper;
+    private readonly ApplicationDbContext _context;
+    private readonly IUserManagerProxy<ApplicationUser> _userManager;
+    public GetAllPostsForCurrentUserQueryTest(PostQueryTestFixture fixture)
     {
-        private readonly IMapper Mapper;
-        private readonly ApplicationDbContext Context;
-        private readonly IUserManagerProxy<ApplicationUser> UserManager;
-        public GetAllPostsForCurrentUserQueryTest(PostQueryTestFixture fixture)
-        {
-            UserManager = fixture.UserManager;
-            Mapper = fixture.Mapper;
-            Context = fixture.Context;
-        }
+        _userManager = fixture.UserManager;
+        _mapper = fixture.Mapper;
+        _context = fixture.Context;
+    }
 
-        [Fact]
-        public async Task GetAllPostsForCurrentUserQueryHandler_SuccessReturnAllForAdmin()
-        {
-            var handler = new GetAllPostsForCurrentUserQueryHandler(UserManager, Context, Mapper);
+    [Fact]
+    public async Task GetAllPostsForCurrentUserQueryHandler_SuccessReturnAllForAdmin()
+    {
+        var handler = new GetAllPostsForCurrentUserQueryHandler(_userManager, _context, _mapper);
 
-            var response = await handler.Handle(
-                new GetAllPostsForCurrentUserQuery()
-                {
-                    UserName = UserManagerFactory.UserB
-                },
-                CancellationToken.None);
+        var response = await handler.Handle(
+            new GetAllPostsForCurrentUserQuery()
+            {
+                UserName = UserManagerFactory.UserB
+            },
+            CancellationToken.None);
 
-            Assert.True(response.Conclusion);
-            Assert.NotNull(response.Output);
-            Assert.Equal(Context.Posts!.Count(), response.Output.Count);
-        }
+        Assert.True(response.Conclusion);
+        Assert.NotNull(response.Output);
+        Assert.Equal(_context.Posts!.Count(), response.Output.Count);
+    }
 
-        [Fact]
-        public async Task GetAllPostsForCurrentUserQueryHandler_SuccessReturnOnlyOwnedForAuthor()
-        {
-            var handler = new GetAllPostsForCurrentUserQueryHandler(UserManager, Context, Mapper);
+    [Fact]
+    public async Task GetAllPostsForCurrentUserQueryHandler_SuccessReturnOnlyOwnedForAuthor()
+    {
+        var handler = new GetAllPostsForCurrentUserQueryHandler(_userManager, _context, _mapper);
 
-            var response = await handler.Handle(
-                new GetAllPostsForCurrentUserQuery()
-                {
-                    UserName = UserManagerFactory.UserA
-                },
-                CancellationToken.None);
+        var response = await handler.Handle(
+            new GetAllPostsForCurrentUserQuery()
+            {
+                UserName = UserManagerFactory.UserA
+            },
+            CancellationToken.None);
 
-            Assert.True(response.Conclusion);
-            Assert.NotNull(response.Output);
-            Assert.Equal(
-                Context.Posts!.Where(x => x.ApplicationUserId == UserManagerFactory.UserAId).Count(),
-                response.Output.Count);
-        }
+        Assert.True(response.Conclusion);
+        Assert.NotNull(response.Output);
+        Assert.Equal(
+            _context.Posts!.Where(x => x.ApplicationUserId == UserManagerFactory.UserAId).Count(),
+            response.Output.Count);
     }
 }

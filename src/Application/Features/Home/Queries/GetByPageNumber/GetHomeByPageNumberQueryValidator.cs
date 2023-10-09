@@ -1,13 +1,12 @@
 ﻿using FluentValidation;
 
-namespace BlogTemplate.Application.Features.Home.Queries.GetByPageNumber
+namespace BlogTemplate.Application.Features.Home.Queries.GetByPageNumber;
+
+public class GetHomeByPageNumberQueryValidator : AbstractValidator<GetHomeByPageNumberQuery>
 {
-    public class GetHomeByPageNumberQueryValidator : AbstractValidator<GetHomeByPageNumberQuery>
+    public GetHomeByPageNumberQueryValidator()
     {
-        public GetHomeByPageNumberQueryValidator()
-        {
-            RuleFor(x => x.Page).NotEmpty();
-            RuleFor(x => x.PageSize).GreaterThan(0);
-        }
+        RuleFor(x => x.Page).NotEmpty();
+        RuleFor(x => x.PageSize).GreaterThan(0);
     }
 }

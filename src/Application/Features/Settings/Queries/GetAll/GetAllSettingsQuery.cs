@@ -2,9 +2,8 @@
 using BlogTemplate.Application.DataTransfer.Settings;
 using MediatR;
 
-namespace BlogTemplate.Application.Features.Settings.Queries.GetAll
+namespace BlogTemplate.Application.Features.Settings.Queries.GetAll;
+
+public class GetAllSettingsQuery : IRequest<Result<List<SettingsDto>>>
 {
-    public class GetAllSettingsQuery : IRequest<Result<List<SettingsDto>>>
-    {
-    }
 }

@@ -1,12 +1,11 @@
-﻿namespace BlogTemplate.Application.Abstractions.Enums
+﻿namespace BlogTemplate.Application.Abstractions.Enums;
+
+public enum ResultType
 {
-    public enum ResultType
-    {
-        Ok,
-        Created,
-        Updated,
-        Upserted,
-        Replaced,
-        Deleted
-    }
+    Ok,
+    Created,
+    Updated,
+    Upserted,
+    Replaced,
+    Deleted
 }

@@ -8,31 +8,27 @@ using BlogTemplate.Tests.Common.Extensions.DbContext.Settings;
 
 using Xunit;
 
-namespace BlogTemplate.Tests.Features.Settings.Queries
+namespace BlogTemplate.Tests.Features.Settings.Queries;
+
+public class SettingsQueryTestFixture : IDisposable
 {
-    public class SettingsQueryTestFixture : IDisposable
+    public ApplicationDbContext Context;
+    public IMapper Mapper;
+
+    public SettingsQueryTestFixture()
     {
-        public ApplicationDbContext Context;
-        public IMapper Mapper;
-
-        public SettingsQueryTestFixture()
-        {
-            Context = DbContextBuilder.NewContext.AddSettings().Build();
-            var configurationProvider = new MapperConfiguration(cfg =>
-            {
-                cfg.AddProfile(new AssemblyMappingProfile(
-                    typeof(IApplicationDbContext).Assembly));
-            });
-            Mapper = configurationProvider.CreateMapper();
-        }
-
-        public void Dispose()
-        {
-            Context.Database.EnsureDeleted();
-            Context.Dispose();
-        }
+        Context = DbContextBuilder.NewContext.AddSettings().Build();
+        var configurationProvider = new MapperConfiguration(cfg => cfg.AddProfile(new AssemblyMappingProfile(
+                typeof(IApplicationDbContext).Assembly)));
+        Mapper = configurationProvider.CreateMapper();
     }
 
-    [CollectionDefinition("SettingsQueryCollection")]
-    public class SettingsQueryCollection : ICollectionFixture<SettingsQueryTestFixture> { }
+    public void Dispose()
+    {
+        Context.Database.EnsureDeleted();
+        Context.Dispose();
+    }
 }
+
+[CollectionDefinition("SettingsQueryCollection")]
+public class SettingsQueryCollection : ICollectionFixture<SettingsQueryTestFixture> { }

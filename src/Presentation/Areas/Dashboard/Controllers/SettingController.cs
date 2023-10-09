@@ -8,55 +8,54 @@ using BlogTemplate.Presentation.Utills;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BlogTemplate.Presentation.Areas.Dashboard.Controllers
+namespace BlogTemplate.Presentation.Areas.Dashboard.Controllers;
+
+[Area("Dashboard")]
+[Authorize(Roles = "Admin")]
+public class SettingController : BaseController
 {
-    [Area("Dashboard")]
-    [Authorize(Roles = "Admin")]
-    public class SettingController : BaseController
+    private readonly ImageUtility _imageUtility;
+    private readonly INotyfService _notification;
+
+    public SettingController(INotyfService notyfService,
+                            ImageUtility imageUtility)
     {
-        private readonly ImageUtility _imageUtility;
-        private readonly INotyfService _notification;
+        _notification = notyfService;
+        _imageUtility = imageUtility;
+    }
 
-        public SettingController(INotyfService notyfService,
-                                ImageUtility imageUtility)
-        {
-            _notification = notyfService;
-            _imageUtility = imageUtility;
-        }
+    [HttpGet]
+    public async Task<IActionResult> Index()
+    {
+        return View((await Mediator.Send(new GetAllSettingsQuery())).Output?.FirstOrDefault());
+    }
 
-        [HttpGet]
-        public async Task<IActionResult> Index()
+    [HttpPost]
+    public async Task<IActionResult> Index(SettingsDto settingsDto)
+    {
+        if (!ModelState.IsValid) { return View(settingsDto); }
+        if (settingsDto.Thumbnail != null)
         {
-            return View((await Mediator.Send(new GetAllSettingsQuery())).Output?.FirstOrDefault());
+            settingsDto.ThumbnailUrl = _imageUtility.Upload(settingsDto.Thumbnail);
         }
-
-        [HttpPost]
-        public async Task<IActionResult> Index(SettingsDto settingsDto)
+        var response = await Mediator.Send(new UpdateSettingsCommand()
         {
-            if (!ModelState.IsValid) { return View(settingsDto); }
-            if (settingsDto.Thumbnail != null)
-            {
-                settingsDto.ThumbnailUrl = _imageUtility.Upload(settingsDto.Thumbnail);
-            }
-            var response = await Mediator.Send(new UpdateSettingsCommand()
-            {
-                Id = settingsDto.Id,
-                SiteName = settingsDto.SiteName,
-                Title = settingsDto.Title,
-                ShortDescription = settingsDto.ShortDescription,
-                ThumbnailUrl = settingsDto.ThumbnailUrl,
-                FacebookUrl = settingsDto.FacebookUrl,
-                TwitterUrl = settingsDto.TwitterUrl,
-                GithubUrl = settingsDto.GithubUrl,
-            });
-            if (response.Conclusion)
-            {
-                _imageUtility.Remove(response.Output?.RemoveThumbnailUrl!);
-                _notification.Success("Settings updated succesfully");
-                return RedirectToAction("Index", "Setting", new { area = "Dashboard" });
-            }
-            _notification.Error($"Settings not found");
-            return View(settingsDto);
+            Id = settingsDto.Id,
+            SiteName = settingsDto.SiteName,
+            Title = settingsDto.Title,
+            ShortDescription = settingsDto.ShortDescription,
+            ThumbnailUrl = settingsDto.ThumbnailUrl,
+            FacebookUrl = settingsDto.FacebookUrl,
+            TwitterUrl = settingsDto.TwitterUrl,
+            GithubUrl = settingsDto.GithubUrl,
+        });
+        if (response.Conclusion)
+        {
+            _imageUtility.Remove(response.Output?.RemoveThumbnailUrl!);
+            _notification.Success("Settings updated succesfully");
+            return RedirectToAction("Index", "Setting", new { area = "Dashboard" });
         }
+        _notification.Error($"Settings not found");
+        return View(settingsDto);
     }
 }

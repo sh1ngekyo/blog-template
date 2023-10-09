@@ -9,27 +9,23 @@ using BlogTemplate.Tests.Common.Extensions.DbContext.Post;
 
 using Xunit;
 
-namespace BlogTemplate.Tests.Features.Post.Queries
+namespace BlogTemplate.Tests.Features.Post.Queries;
+
+public class PostQueryTestFixture
 {
-    public class PostQueryTestFixture
+    public IMapper Mapper;
+    public ApplicationDbContext Context;
+    public IUserManagerProxy<ApplicationUser> UserManager;
+
+    public PostQueryTestFixture()
     {
-        public IMapper Mapper;
-        public ApplicationDbContext Context;
-        public IUserManagerProxy<ApplicationUser> UserManager;
-
-        public PostQueryTestFixture()
-        {
-            Context = DbContextBuilder.NewContext.AddPosts().Build();
-            UserManager = UserManagerFactory.Create();
-            var configurationProvider = new MapperConfiguration(cfg =>
-            {
-                cfg.AddProfile(new AssemblyMappingProfile(
-                    typeof(IApplicationDbContext).Assembly));
-            });
-            Mapper = configurationProvider.CreateMapper();
-        }
+        Context = DbContextBuilder.NewContext.AddPosts().Build();
+        UserManager = UserManagerFactory.Create();
+        var configurationProvider = new MapperConfiguration(cfg => cfg.AddProfile(new AssemblyMappingProfile(
+                typeof(IApplicationDbContext).Assembly)));
+        Mapper = configurationProvider.CreateMapper();
     }
-
-    [CollectionDefinition("PostQueryCollection")]
-    public class PostQueryCollection : ICollectionFixture<PostQueryTestFixture> { }
 }
+
+[CollectionDefinition("PostQueryCollection")]
+public class PostQueryCollection : ICollectionFixture<PostQueryTestFixture> { }

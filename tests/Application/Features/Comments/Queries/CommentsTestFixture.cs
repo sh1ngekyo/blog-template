@@ -1,21 +1,19 @@
 ﻿using BlogTemplate.Infrastructure.Data;
 using BlogTemplate.Tests.Common;
-
-using Xunit;
 using BlogTemplate.Tests.Common.Extensions.DbContext.Comments;
+using Xunit;
 
-namespace BlogTemplate.Tests.Features.Comments.Queries
+namespace BlogTemplate.Tests.Features.Comments.Queries;
+
+public class CommentQueryTestFixture
 {
-    public class CommentQueryTestFixture
+    public ApplicationDbContext Context;
+
+    public CommentQueryTestFixture()
     {
-        public ApplicationDbContext Context;
-
-        public CommentQueryTestFixture()
-        {
-            Context = DbContextBuilder.NewContext.AddComments().Build();
-        }
+        Context = DbContextBuilder.NewContext.AddComments().Build();
     }
-
-    [CollectionDefinition("CommentQueryCollection")]
-    public class CommentQueryCollection : ICollectionFixture<CommentQueryTestFixture> { }
 }
+
+[CollectionDefinition("CommentQueryCollection")]
+public class CommentQueryCollection : ICollectionFixture<CommentQueryTestFixture> { }

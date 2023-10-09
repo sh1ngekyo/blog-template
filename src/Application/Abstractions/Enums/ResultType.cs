@@ -1,14 +1,13 @@
-﻿namespace BlogTemplate.Application.Abstractions.Enums
+﻿namespace BlogTemplate.Application.Abstractions.Enums;
+
+public enum ErrorType
 {
-    public enum ErrorType
-    {
-        NotFound,
-        WrongArguments,
-        NotValid,
-        NoAuthentication,
-        NotAuthorized,
-        Unknown,
-        ConfigurationError,
-        NetworkError,
-    }
+    NotFound,
+    WrongArguments,
+    NotValid,
+    NoAuthentication,
+    NotAuthorized,
+    Unknown,
+    ConfigurationError,
+    NetworkError,
 }

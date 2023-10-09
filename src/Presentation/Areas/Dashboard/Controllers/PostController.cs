@@ -15,140 +15,139 @@ using Microsoft.AspNetCore.Mvc;
 
 using X.PagedList;
 
-namespace BlogTemplate.Presentation.Areas.Dashboard.Controllers
+namespace BlogTemplate.Presentation.Areas.Dashboard.Controllers;
+
+[Area("Dashboard")]
+[Authorize]
+public class PostController : BaseController
 {
-    [Area("Dashboard")]
-    [Authorize]
-    public class PostController : BaseController
+    private readonly ImageUtility _imageUtility;
+    private readonly INotyfService _notification;
+
+    public PostController(INotyfService notyfService,
+                            ImageUtility imageUtility)
     {
-        private readonly ImageUtility _imageUtility;
-        private readonly INotyfService _notification;
+        _notification = notyfService;
+        _imageUtility = imageUtility;
+    }
 
-        public PostController(INotyfService notyfService,
-                                ImageUtility imageUtility)
+    [HttpGet]
+    public async Task<IActionResult> Index(int? page)
+    {
+        var response = await Mediator.Send(new GetAllPostsForCurrentUserQuery()
         {
-            _notification = notyfService;
-            _imageUtility = imageUtility;
+            UserName = User.Identity!.Name
+        });
+
+        var pageSize = 5;
+        var pageNumber = (page ?? 1);
+
+        return View(
+            await response.Output!
+            .OrderByDescending(x => x.CreatedDate)
+            .ToPagedListAsync(pageNumber, pageSize));
+    }
+
+    [HttpGet]
+    public IActionResult Create()
+    {
+        return View(new CreatePostDto());
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Create(CreatePostDto createPostDto)
+    {
+        if (!ModelState.IsValid) { return View(createPostDto); }
+        string? thumbnailUrl = null;
+        if (createPostDto.Thumbnail != null)
+        {
+            thumbnailUrl = _imageUtility.Upload(createPostDto.Thumbnail);
         }
-
-        [HttpGet]
-        public async Task<IActionResult> Index(int? page)
+        await Mediator.Send(new CreatePostCommand
         {
-            var response = await Mediator.Send(new GetAllPostsForCurrentUserQuery()
-            {
-                UserName = User.Identity!.Name
-            });
+            UserName = User.Identity!.Name,
+            Title = createPostDto.Title,
+            Description = createPostDto.Description,
+            ShortDescription = createPostDto.ShortDescription,
+            ThumbnailUrl = thumbnailUrl,
+        });
+        _notification.Success("Post Created Successfully");
+        return RedirectToAction("Index");
+    }
 
-            var pageSize = 5;
-            var pageNumber = (page ?? 1);
+    [HttpPost]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var response = await Mediator.Send(new DeletePostCommand
+        {
+            PostId = id,
+            DeletedByUserName = User.Identity!.Name
+        });
+        if (!response.Conclusion)
+        {
+            _notification.Error(response.ErrorDescription?.ErrorMessage);
+            return RedirectToAction("Index");
 
-            return View(
-                await response.Output!
-                .OrderByDescending(x => x.CreatedDate)
-                .ToPagedListAsync(pageNumber, pageSize));
         }
+        _imageUtility.Remove(response.Output?.RemoveThumbnailUrl);
+        _notification.Success("Post Deleted Successfully");
+        return RedirectToAction("Index", "Post", new { area = "Dashboard" });
+    }
 
-        [HttpGet]
-        public IActionResult Create()
+    [HttpGet]
+    public async Task<IActionResult> Edit(int id)
+    {
+        var postResponse = await Mediator.Send(new GetPostByIdQuery { Id = id });
+        if (!postResponse.Conclusion)
         {
-            return View(new CreatePostDto());
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Create(CreatePostDto createPostDto)
-        {
-            if (!ModelState.IsValid) { return View(createPostDto); }
-            string? thumbnailUrl = null;
-            if (createPostDto.Thumbnail != null)
-            {
-                thumbnailUrl = _imageUtility.Upload(createPostDto.Thumbnail);
-            }
-            await Mediator.Send(new CreatePostCommand
-            {
-                UserName = User.Identity!.Name,
-                Title = createPostDto.Title,
-                Description = createPostDto.Description,
-                ShortDescription = createPostDto.ShortDescription,
-                ThumbnailUrl = thumbnailUrl,
-            });
-            _notification.Success("Post Created Successfully");
+            _notification.Error(postResponse.ErrorDescription?.ErrorMessage);
             return RedirectToAction("Index");
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Delete(int id)
-        {
-            var response = await Mediator.Send(new DeletePostCommand
-            {
-                PostId = id,
-                DeletedByUserName = User.Identity!.Name
-            });
-            if (!response.Conclusion)
-            {
-                _notification.Error(response.ErrorDescription?.ErrorMessage);
-                return RedirectToAction("Index");
+        var userResponse = await Mediator.Send(new GetUserByNameQuery { UserName = User.Identity!.Name });
 
-            }
-            _imageUtility.Remove(response.Output?.RemoveThumbnailUrl);
-            _notification.Success("Post Deleted Successfully");
-            return RedirectToAction("Index", "Post", new { area = "Dashboard" });
+        if (userResponse.Output?.Role != WebsiteRoles.WebsiteAdmin
+            && userResponse.Output!.UserName != postResponse.Output?.AuthorName)
+        {
+            _notification.Error("You are not authorized");
+            return RedirectToAction("Index");
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Edit(int id)
+        var createPostDto = new CreatePostDto()
         {
-            var postResponse = await Mediator.Send(new GetPostByIdQuery { Id = id });
-            if (!postResponse.Conclusion)
-            {
-                _notification.Error(postResponse.ErrorDescription?.ErrorMessage);
-                return RedirectToAction("Index");
-            }
+            Id = postResponse.Output!.Id,
+            Title = postResponse.Output.Title,
+            ShortDescription = postResponse.Output.ShortDescription,
+            Description = postResponse.Output.Description,
+            ThumbnailUrl = postResponse.Output.ThumbnailUrl,
+        };
 
-            var userResponse = await Mediator.Send(new GetUserByNameQuery { UserName = User.Identity!.Name });
+        return View(createPostDto);
+    }
 
-            if (userResponse.Output?.Role != WebsiteRoles.WebsiteAdmin
-                && userResponse.Output!.UserName != postResponse.Output?.AuthorName)
-            {
-                _notification.Error("You are not authorized");
-                return RedirectToAction("Index");
-            }
-
-            var createPostDto = new CreatePostDto()
-            {
-                Id = postResponse.Output!.Id,
-                Title = postResponse.Output.Title,
-                ShortDescription = postResponse.Output.ShortDescription,
-                Description = postResponse.Output.Description,
-                ThumbnailUrl = postResponse.Output.ThumbnailUrl,
-            };
-
-            return View(createPostDto);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Edit(CreatePostDto createPostDto)
+    [HttpPost]
+    public async Task<IActionResult> Edit(CreatePostDto createPostDto)
+    {
+        if (!ModelState.IsValid) { return View(createPostDto); }
+        if (createPostDto.Thumbnail != null)
         {
-            if (!ModelState.IsValid) { return View(createPostDto); }
-            if (createPostDto.Thumbnail != null)
-            {
-                createPostDto.ThumbnailUrl = _imageUtility.Upload(createPostDto.Thumbnail);
-            }
-            var response = await Mediator.Send(new UpdatePostCommand
-            {
-                PostId = createPostDto.Id,
-                ThumbnailUrl = createPostDto.ThumbnailUrl,
-                Title = createPostDto.Title,
-                ShortDescription = createPostDto.ShortDescription,
-                Description = createPostDto.Description,
-            });
-            if (!response.Conclusion)
-            {
-                _notification.Error(response.ErrorDescription?.ErrorMessage);
-                return View();
-            }
-            _imageUtility.Remove(response.Output?.RemoveThumbnailUrl);
-            _notification.Success("Post updated succesfully");
-            return RedirectToAction("Index", "Post", new { area = "Dashboard" });
+            createPostDto.ThumbnailUrl = _imageUtility.Upload(createPostDto.Thumbnail);
         }
+        var response = await Mediator.Send(new UpdatePostCommand
+        {
+            PostId = createPostDto.Id,
+            ThumbnailUrl = createPostDto.ThumbnailUrl,
+            Title = createPostDto.Title,
+            ShortDescription = createPostDto.ShortDescription,
+            Description = createPostDto.Description,
+        });
+        if (!response.Conclusion)
+        {
+            _notification.Error(response.ErrorDescription?.ErrorMessage);
+            return View();
+        }
+        _imageUtility.Remove(response.Output?.RemoveThumbnailUrl);
+        _notification.Success("Post updated succesfully");
+        return RedirectToAction("Index", "Post", new { area = "Dashboard" });
     }
 }

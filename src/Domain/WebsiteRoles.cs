@@ -1,8 +1,7 @@
-﻿namespace BlogTemplate.Domain
+﻿namespace BlogTemplate.Domain;
+
+public class WebsiteRoles
 {
-    public class WebsiteRoles
-    {
-        public const string? WebsiteAdmin = "Admin";
-        public const string? WebsiteAuthor = "Author";
-    }
+    public const string? WebsiteAdmin = "Admin";
+    public const string? WebsiteAuthor = "Author";
 }

@@ -3,34 +3,33 @@ using BlogTemplate.Application.Abstractions.Database;
 using BlogTemplate.Application.Abstractions.Enums;
 using MediatR;
 
-namespace BlogTemplate.Application.Features.Comments.Commands.Create
+namespace BlogTemplate.Application.Features.Comments.Commands.Create;
+
+public class CreateCommentCommandHandler
+    : IRequestHandler<CreateCommentCommand, Result<CommentsBaseCommandResponse>>
 {
-    public class CreateCommentCommandHandler 
-        : IRequestHandler<CreateCommentCommand, Result<CommentsBaseCommandResponse>>
+    private readonly IApplicationDbContext _context;
+    public CreateCommentCommandHandler(IApplicationDbContext context) =>
+        _context = context;
+
+    public async Task<Result<CommentsBaseCommandResponse>> Handle(CreateCommentCommand request,
+        CancellationToken cancellationToken)
     {
-        private readonly IApplicationDbContext _context;
-        public CreateCommentCommandHandler(IApplicationDbContext context) =>
-            _context = context;
+        var dateCreated = DateTimeOffset.Now;
 
-        public async Task<Result<CommentsBaseCommandResponse>> Handle(CreateCommentCommand request,
-            CancellationToken cancellationToken)
+        await _context.Comments!.AddAsync(new Domain.Models.Comment
         {
-            var dateCreated = DateTimeOffset.Now;
-
-            await _context.Comments!.AddAsync(new Domain.Models.Comment
-            {
-                ParentId = request.ParentId,
-                PostId = request.PostId,
-                Content = request.Content!,
-                ApplicationUserId = request.ApplicationUserId,
-                DateCreated = dateCreated,
-                DateModified = dateCreated,
-            });
-            await _context.SaveChangesAsync(cancellationToken);
-            return new Result<CommentsBaseCommandResponse>(ResultType.Created).SetOutput(new CommentsBaseCommandResponse
-            {
-                PostSlug = _context.Posts!.FirstOrDefault(x => x.Id == request.PostId)!.Slug!,
-            });
-        }
+            ParentId = request.ParentId,
+            PostId = request.PostId,
+            Content = request.Content!,
+            ApplicationUserId = request.ApplicationUserId,
+            DateCreated = dateCreated,
+            DateModified = dateCreated,
+        }, cancellationToken);
+        await _context.SaveChangesAsync(cancellationToken);
+        return new Result<CommentsBaseCommandResponse>(ResultType.Created).SetOutput(new CommentsBaseCommandResponse
+        {
+            PostSlug = _context.Posts!.FirstOrDefault(x => x.Id == request.PostId)!.Slug!,
+        });
     }
 }

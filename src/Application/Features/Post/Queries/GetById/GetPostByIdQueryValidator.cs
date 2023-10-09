@@ -1,12 +1,11 @@
 ﻿using FluentValidation;
 
-namespace BlogTemplate.Application.Features.Post.Queries.GetById
+namespace BlogTemplate.Application.Features.Post.Queries.GetById;
+
+public class GetPostByIdQueryValidator : AbstractValidator<GetPostByIdQuery>
 {
-    public class GetPostByIdQueryValidator : AbstractValidator<GetPostByIdQuery>
+    public GetPostByIdQueryValidator()
     {
-        public GetPostByIdQueryValidator()
-        {
-            RuleFor(x => x.Id).NotEmpty();
-        }
+        RuleFor(x => x.Id).NotEmpty();
     }
 }

@@ -1,12 +1,11 @@
 ﻿using FluentValidation;
 
-namespace BlogTemplate.Application.Features.Post.Queries.GetBySlug
+namespace BlogTemplate.Application.Features.Post.Queries.GetBySlug;
+
+public class GetPostBySlugValidator : AbstractValidator<GetPostBySlugQuery>
 {
-    public class GetPostBySlugValidator : AbstractValidator<GetPostBySlugQuery>
+    public GetPostBySlugValidator()
     {
-        public GetPostBySlugValidator()
-        {
-            RuleFor(x => x.Slug).NotNull().NotEmpty();
-        }
+        RuleFor(x => x.Slug).NotNull().NotEmpty();
     }
 }

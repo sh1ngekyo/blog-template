@@ -1,20 +1,19 @@
 ﻿using BlogTemplate.Infrastructure.Data;
 
-namespace BlogTemplate.Tests.Common
+namespace BlogTemplate.Tests.Common;
+
+public abstract class TestDbContextCommandBase : IDisposable
 {
-    public abstract class TestDbContextCommandBase : IDisposable
+    protected readonly ApplicationDbContext Context;
+
+    public TestDbContextCommandBase(ApplicationDbContext context)
     {
-        protected readonly ApplicationDbContext Context;
+        Context = context.Build();
+    }
 
-        public TestDbContextCommandBase(ApplicationDbContext context)
-        {
-            Context = context.Build();
-        }
-
-        public void Dispose()
-        {
-            Context.Database.EnsureDeleted();
-            Context.Dispose();
-        }
+    public void Dispose()
+    {
+        Context.Database.EnsureDeleted();
+        Context.Dispose();
     }
 }

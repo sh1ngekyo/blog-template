@@ -2,23 +2,22 @@
 using BlogTemplate.Domain.Models;
 using BlogTemplate.Infrastructure.Data;
 
-namespace BlogTemplate.Tests.Common
+namespace BlogTemplate.Tests.Common;
+
+public class TestUserManagerWithDbContextCommandBase : IDisposable
 {
-    public class TestUserManagerWithDbContextCommandBase : IDisposable
+    protected readonly ApplicationDbContext _context;
+    protected readonly IUserManagerProxy<ApplicationUser> _userManager;
+
+    public TestUserManagerWithDbContextCommandBase(ApplicationDbContext context, IUserManagerProxy<ApplicationUser> userManagerProxy)
     {
-        protected readonly ApplicationDbContext Context;
-        protected readonly IUserManagerProxy<ApplicationUser> UserManager;
+        _context = context.Build();
+        _userManager = userManagerProxy;
+    }
 
-        public TestUserManagerWithDbContextCommandBase(ApplicationDbContext context, IUserManagerProxy<ApplicationUser> userManagerProxy)
-        {
-            Context = context.Build();
-            UserManager = userManagerProxy;
-        }
-
-        public void Dispose()
-        {
-            Context.Database.EnsureDeleted();
-            Context.Dispose();
-        }
+    public void Dispose()
+    {
+        _context.Database.EnsureDeleted();
+        _context.Dispose();
     }
 }

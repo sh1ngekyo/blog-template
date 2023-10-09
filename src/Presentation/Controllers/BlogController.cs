@@ -13,141 +13,136 @@ using BlogTemplate.Presentation.Abstractions.Controller;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BlogTemplate.Presentation.Controllers
+namespace BlogTemplate.Presentation.Controllers;
+
+public class BlogController : BaseController
 {
-    public class BlogController : BaseController
+    private readonly INotyfService _notification;
+
+    public BlogController(INotyfService notification)
     {
-        private readonly INotyfService _notification;
+        _notification = notification;
+    }
 
-        public BlogController(INotyfService notification)
+    [HttpGet("[controller]/Post/{slug}")]
+    public async Task<IActionResult> Post(string slug)
+    {
+        IActionResult RedirectOnError()
         {
-            _notification = notification;
+            _notification.Error("Post not found");
+            return RedirectToAction("Index", "Home");
         }
 
-        [HttpGet("[controller]/Post/{slug}")]
-        public async Task<IActionResult> Post(string slug)
+        if (string.IsNullOrWhiteSpace(slug))
         {
-            IActionResult RedirectOnError()
-            {
-                _notification.Error("Post not found");
-                return RedirectToAction("Index", "Home");
-            }
+            return RedirectOnError();
+        }
+        var response = await Mediator.Send(new GetPostBySlugQuery
+        {
+            Slug = slug
+        });
+        if (!response.Conclusion)
+        {
+            return RedirectOnError();
+        }
+        response.Output!.Comments = (await Mediator.Send(new GetAllCommentsByPostIdQuery
+        {
+            PostId = response.Output.Id
+        })).Output;
+        return View(response.Output);
+    }
 
-            if (string.IsNullOrWhiteSpace(slug))
+    [Authorize]
+    [HttpPost]
+    public async Task<IActionResult> CreateComment(CreateCommentDto commentCDto)
+    {
+        if (ModelState.IsValid)
+        {
+            var user = (await Mediator.Send(new GetUserByNameQuery()
             {
-                return RedirectOnError();
-            }
-            var response = await Mediator.Send(new GetPostBySlugQuery
-            {
-                Slug = slug
-            });
-            if (!response.Conclusion)
-            {
-                return RedirectOnError();
-            }
-            response.Output!.Comments = (await Mediator.Send(new GetAllCommentsByPostIdQuery
-            {
-                PostId = response.Output.Id
+                UserName = User.Identity!.Name
             })).Output;
-            return View(response.Output);
-        }
-
-        [Authorize]
-        [HttpPost]
-        public async Task<IActionResult> CreateComment(CreateCommentDto commentCDto)
-        {
-            if (ModelState.IsValid)
+            var response = await Mediator.Send(new CreateCommentCommand()
             {
-                var user = (await Mediator.Send(new GetUserByNameQuery()
-                {
-                    UserName = User.Identity!.Name
-                })).Output;
-                var response = await Mediator.Send(new CreateCommentCommand()
-                {
-                    ApplicationUserId = user?.Id,
-                    Content = commentCDto.Content,
-                    ParentId = commentCDto.ReplyToCommentId,
-                    PostId = commentCDto.PostId
-                });
-                if (response.Conclusion)
-                {
-                    _notification.Success("Comment was created");
-                    return RedirectToAction("Post", new
-                    {
-                        slug = response.Output?.PostSlug
-                    });
-                }
-            }
-            _notification.Success("Post not found");
-            return RedirectToAction("Index", "Home");
-        }
-
-        [Authorize]
-        [HttpPost]
-        public async Task<IActionResult> EditComment(EditCommentDto commentEDto)
-        {
-            if (ModelState.IsValid)
-            {
-                var response = await Mediator.Send(new UpdateCommentCommand
-                {
-                    CommentId = commentEDto.CommentId!.Value,
-                    Content = commentEDto.Content,
-                });
-                if (response.Conclusion)
-                {
-                    _notification.Success("Comment was updated");
-                    return RedirectToAction("Post", new
-                    {
-                        slug = response.Output?.PostSlug
-                    });
-                }
-            }
-            _notification.Success("Post not found");
-            return RedirectToAction("Index", "Home");
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> DeleteComment(int commentId)
-        {
-            var response = await Mediator.Send(new DeleteCommentCommand
-            {
-                CommentId = commentId,
+                ApplicationUserId = user?.Id,
+                Content = commentCDto.Content,
+                ParentId = commentCDto.ReplyToCommentId,
+                PostId = commentCDto.PostId
             });
             if (response.Conclusion)
             {
-                _notification.Success("Comment was deleted");
+                _notification.Success("Comment was created");
                 return RedirectToAction("Post", new
                 {
                     slug = response.Output?.PostSlug
                 });
             }
-            _notification.Success("Post not found");
-            return RedirectToAction("Index", "Home");
         }
+        _notification.Success("Post not found");
+        return RedirectToAction("Index", "Home");
+    }
 
-
-        [HttpGet("[controller]/Profile/{username}/{page?}")]
-        public async Task<IActionResult> Profile(string username, int? page)
+    [Authorize]
+    [HttpPost]
+    public async Task<IActionResult> EditComment(EditCommentDto commentEDto)
+    {
+        if (ModelState.IsValid)
         {
-            IActionResult RedirectOnError()
+            var response = await Mediator.Send(new UpdateCommentCommand
             {
-                _notification.Error("Profile not found");
-                return RedirectToAction("Index", "Home");
-            }
-
-            if (string.IsNullOrWhiteSpace(username))
-            {
-                return RedirectOnError();
-            }
-            var response = await Mediator.Send(new GetProfileByUserNameQuery
-            {
-                UserName = username,
+                CommentId = commentEDto.CommentId!.Value,
+                Content = commentEDto.Content,
             });
             if (response.Conclusion)
             {
-                return View(response.Output);
+                _notification.Success("Comment was updated");
+                return RedirectToAction("Post", new
+                {
+                    slug = response.Output?.PostSlug
+                });
             }
+        }
+        _notification.Success("Post not found");
+        return RedirectToAction("Index", "Home");
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> DeleteComment(int commentId)
+    {
+        var response = await Mediator.Send(new DeleteCommentCommand
+        {
+            CommentId = commentId,
+        });
+        if (response.Conclusion)
+        {
+            _notification.Success("Comment was deleted");
+            return RedirectToAction("Post", new
+            {
+                slug = response.Output?.PostSlug
+            });
+        }
+        _notification.Success("Post not found");
+        return RedirectToAction("Index", "Home");
+    }
+
+
+    [HttpGet("[controller]/Profile/{username}/{page?}")]
+    public async Task<IActionResult> Profile(string username, int? page)
+    {
+        IActionResult RedirectOnError()
+        {
+            _notification.Error("Profile not found");
+            return RedirectToAction("Index", "Home");
+        }
+
+        if (string.IsNullOrWhiteSpace(username))
+        {
             return RedirectOnError();
         }
+        var response = await Mediator.Send(new GetProfileByUserNameQuery
+        {
+            UserName = username,
+        });
+        return response.Conclusion ? View(response.Output) : RedirectOnError();
     }
 }

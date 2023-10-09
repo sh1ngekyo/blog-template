@@ -1,7 +1,6 @@
-﻿namespace BlogTemplate.Infrastructure
+﻿namespace BlogTemplate.Infrastructure;
+
+public interface IDbInitializer
 {
-    public interface IDbInitializer
-    {
-        void Initialize();
-    }
+    void Initialize();
 }

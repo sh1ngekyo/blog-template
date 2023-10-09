@@ -1,7 +1,6 @@
-﻿namespace BlogTemplate.Application.Features.Comments.Commands
+﻿namespace BlogTemplate.Application.Features.Comments.Commands;
+
+public class CommentsBaseCommandResponse
 {
-    public class CommentsBaseCommandResponse
-    {
-        public string? PostSlug { get; set; }
-    }
+    public string? PostSlug { get; set; }
 }

@@ -1,26 +1,22 @@
+using System.Reflection;
 using AspNetCoreHero.ToastNotification;
 using AspNetCoreHero.ToastNotification.Extensions;
-
-using BlogTemplate.Domain.Models;
-using BlogTemplate.Infrastructure.Data;
-using BlogTemplate.Infrastructure;
-
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
-using BlogTemplate.Presentation.Utills;
 using BlogTemplate.Application;
 using BlogTemplate.Application.Abstractions.Database;
 using BlogTemplate.Application.Common.Mappings;
-using System.Reflection;
+using BlogTemplate.Domain.Models;
+using BlogTemplate.Infrastructure;
+using BlogTemplate.Infrastructure.Data;
+using BlogTemplate.Presentation.Utills;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews()
-            .AddNewtonsoftJson(options =>
-            {
-                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-            });
+            .AddNewtonsoftJson(options => 
+                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
@@ -82,9 +78,7 @@ app.Run();
 
 void DataSeeding()
 {
-    using (var scope = app.Services.CreateScope())
-    {
-        var DbInitialize = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
-        DbInitialize.Initialize();
-    }
+    using var scope = app.Services.CreateScope();
+    var dbInitialize = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
+    dbInitialize.Initialize();
 }

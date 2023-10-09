@@ -9,126 +9,125 @@ using BlogTemplate.Presentation.Utills;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BlogTemplate.Presentation.Areas.Dashboard.Controllers
+namespace BlogTemplate.Presentation.Areas.Dashboard.Controllers;
+
+[Area("Dashboard")]
+[Authorize(Roles = "Admin")]
+public class PageController : BaseController
 {
-    [Area("Dashboard")]
-    [Authorize(Roles = "Admin")]
-    public class PageController : BaseController
+    private readonly INotyfService _notification;
+    private readonly ImageUtility _imageUtility;
+
+    public PageController(INotyfService notification,
+                            ImageUtility imageUtility)
     {
-        private readonly INotyfService _notification;
-        private readonly ImageUtility _imageUtility;
+        _notification = notification;
+        _imageUtility = imageUtility;
+    }
 
-        public PageController(INotyfService notification,
-                                ImageUtility imageUtility)
+    [HttpGet]
+    public async Task<IActionResult> About()
+    {
+        var response = await Mediator.Send(new GetPageBySlugQuery()
         {
-            _notification = notification;
-            _imageUtility = imageUtility;
-        }
+            Slug = "about"
+        });
+        return View(response.Output);
+    }
 
-        [HttpGet]
-        public async Task<IActionResult> About()
+    [HttpPost]
+    public async Task<IActionResult> About(PageDto pageDto)
+    {
+        if (pageDto.Thumbnail != null)
         {
-            var response = await Mediator.Send(new GetPageBySlugQuery()
-            {
-                Slug = "about"
-            });
-            return View(response.Output);
+            pageDto.ThumbnailUrl = _imageUtility.Upload(pageDto.Thumbnail);
         }
-
-        [HttpPost]
-        public async Task<IActionResult> About(PageDto pageDto)
+        var response = await Mediator.Send(new UpdatePageCommand()
         {
-            if (pageDto.Thumbnail != null)
-            {
-                pageDto.ThumbnailUrl = _imageUtility.Upload(pageDto.Thumbnail);
-            }
-            var response = await Mediator.Send(new UpdatePageCommand()
-            {
-                Id = pageDto.Id,
-                Title = pageDto.Title,
-                Description = pageDto.Description,
-                ShortDescription = pageDto.ShortDescription,
-                ThumbnailUrl = pageDto.ThumbnailUrl,
-            });
-            if (response.Conclusion)
-            {
-                _imageUtility.Remove(response.Output?.RemoveThumbnailUrl);
-                _notification.Success("About page updated succesfully");
-                return RedirectToAction("About", "Page", new { area = "Dashboard" });
-            }
-            _notification.Error(response.ErrorDescription?.ErrorMessage);
-            return View(pageDto);
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> Contact()
+            Id = pageDto.Id,
+            Title = pageDto.Title,
+            Description = pageDto.Description,
+            ShortDescription = pageDto.ShortDescription,
+            ThumbnailUrl = pageDto.ThumbnailUrl,
+        });
+        if (response.Conclusion)
         {
-            var response = await Mediator.Send(new GetPageBySlugQuery()
-            {
-                Slug = "contact"
-            });
-            return View(response.Output);
+            _imageUtility.Remove(response.Output?.RemoveThumbnailUrl);
+            _notification.Success("About page updated succesfully");
+            return RedirectToAction("About", "Page", new { area = "Dashboard" });
         }
+        _notification.Error(response.ErrorDescription?.ErrorMessage);
+        return View(pageDto);
+    }
 
-        [HttpPost]
-        public async Task<IActionResult> Contact(PageDto pageDto)
+    [HttpGet]
+    public async Task<IActionResult> Contact()
+    {
+        var response = await Mediator.Send(new GetPageBySlugQuery()
         {
-            if (pageDto.Thumbnail != null)
-            {
-                pageDto.ThumbnailUrl = _imageUtility.Upload(pageDto.Thumbnail);
-            }
-            var response = await Mediator.Send(new UpdatePageCommand()
-            {
-                Id = pageDto.Id,
-                Title = pageDto.Title,
-                Description = pageDto.Description,
-                ShortDescription = pageDto.ShortDescription,
-                ThumbnailUrl = pageDto.ThumbnailUrl,
-            });
-            if (response.Conclusion)
-            {
-                _imageUtility.Remove(response.Output?.RemoveThumbnailUrl);
-                _notification.Success("Contact page updated succesfully");
-                return RedirectToAction("Contact", "Page", new { area = "Dashboard" });
-            }
-            _notification.Error(response.ErrorDescription?.ErrorMessage);
-            return View(pageDto);
-        }
+            Slug = "contact"
+        });
+        return View(response.Output);
+    }
 
-
-        [HttpGet]
-        public async Task<IActionResult> Privacy()
+    [HttpPost]
+    public async Task<IActionResult> Contact(PageDto pageDto)
+    {
+        if (pageDto.Thumbnail != null)
         {
-            var response = await Mediator.Send(new GetPageBySlugQuery()
-            {
-                Slug = "privacy"
-            });
-            return View(response.Output);
+            pageDto.ThumbnailUrl = _imageUtility.Upload(pageDto.Thumbnail);
         }
-
-        [HttpPost]
-        public async Task<IActionResult> Privacy(PageDto pageDto)
+        var response = await Mediator.Send(new UpdatePageCommand()
         {
-            if (pageDto.Thumbnail != null)
-            {
-                pageDto.ThumbnailUrl = _imageUtility.Upload(pageDto.Thumbnail);
-            }
-            var response = await Mediator.Send(new UpdatePageCommand()
-            {
-                Id = pageDto.Id,
-                Title = pageDto.Title,
-                Description = pageDto.Description,
-                ShortDescription = pageDto.ShortDescription,
-                ThumbnailUrl = pageDto.ThumbnailUrl,
-            });
-            if (response.Conclusion)
-            {
-                _imageUtility.Remove(response.Output?.RemoveThumbnailUrl);
-                _notification.Success("Privacy page updated succesfully");
-                return RedirectToAction("Privacy", "Page", new { area = "Dashboard" });
-            }
-            _notification.Error(response.ErrorDescription?.ErrorMessage);
-            return View(pageDto);
+            Id = pageDto.Id,
+            Title = pageDto.Title,
+            Description = pageDto.Description,
+            ShortDescription = pageDto.ShortDescription,
+            ThumbnailUrl = pageDto.ThumbnailUrl,
+        });
+        if (response.Conclusion)
+        {
+            _imageUtility.Remove(response.Output?.RemoveThumbnailUrl);
+            _notification.Success("Contact page updated succesfully");
+            return RedirectToAction("Contact", "Page", new { area = "Dashboard" });
         }
+        _notification.Error(response.ErrorDescription?.ErrorMessage);
+        return View(pageDto);
+    }
+
+
+    [HttpGet]
+    public async Task<IActionResult> Privacy()
+    {
+        var response = await Mediator.Send(new GetPageBySlugQuery()
+        {
+            Slug = "privacy"
+        });
+        return View(response.Output);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Privacy(PageDto pageDto)
+    {
+        if (pageDto.Thumbnail != null)
+        {
+            pageDto.ThumbnailUrl = _imageUtility.Upload(pageDto.Thumbnail);
+        }
+        var response = await Mediator.Send(new UpdatePageCommand()
+        {
+            Id = pageDto.Id,
+            Title = pageDto.Title,
+            Description = pageDto.Description,
+            ShortDescription = pageDto.ShortDescription,
+            ThumbnailUrl = pageDto.ThumbnailUrl,
+        });
+        if (response.Conclusion)
+        {
+            _imageUtility.Remove(response.Output?.RemoveThumbnailUrl);
+            _notification.Success("Privacy page updated succesfully");
+            return RedirectToAction("Privacy", "Page", new { area = "Dashboard" });
+        }
+        _notification.Error(response.ErrorDescription?.ErrorMessage);
+        return View(pageDto);
     }
 }

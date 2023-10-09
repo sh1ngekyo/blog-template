@@ -1,12 +1,11 @@
 ﻿using FluentValidation;
 
-namespace BlogTemplate.Application.Features.Profile.Queries.GetByName
+namespace BlogTemplate.Application.Features.Profile.Queries.GetByName;
+
+public class GetProfileByUserNameQueryValidator : AbstractValidator<GetProfileByUserNameQuery>
 {
-    public class GetProfileByUserNameQueryValidator : AbstractValidator<GetProfileByUserNameQuery>
+    public GetProfileByUserNameQueryValidator()
     {
-        public GetProfileByUserNameQueryValidator()
-        {
-            RuleFor(x => x.UserName).NotNull().NotEmpty();
-        }
+        RuleFor(x => x.UserName).NotNull().NotEmpty();
     }
 }

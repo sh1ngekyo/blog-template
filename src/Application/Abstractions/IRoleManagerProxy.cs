@@ -1,8 +1,7 @@
-﻿namespace BlogTemplate.Application.Abstractions
+﻿namespace BlogTemplate.Application.Abstractions;
+
+public interface IRoleManagerProxy<T> where T : class
 {
-    public interface IRoleManagerProxy<T> where T : class
-    {
-        Task CreateAsync(T role);
-        Task<bool> RoleExistsAsync(string role);
-    }
+    Task CreateAsync(T role);
+    Task<bool> RoleExistsAsync(string role);
 }

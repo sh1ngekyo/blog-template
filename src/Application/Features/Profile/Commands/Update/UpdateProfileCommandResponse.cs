@@ -1,7 +1,6 @@
-﻿namespace BlogTemplate.Application.Features.Profile.Commands.Update
+﻿namespace BlogTemplate.Application.Features.Profile.Commands.Update;
+
+public class UpdateProfileCommandResponse
 {
-    public class UpdateProfileCommandResponse
-    {
-        public string? RemoveThumbnailUrl { get; set; }
-    }
+    public string? RemoveThumbnailUrl { get; set; }
 }

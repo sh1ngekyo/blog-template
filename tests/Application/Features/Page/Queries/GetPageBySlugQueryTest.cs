@@ -1,58 +1,57 @@
 ﻿using AutoMapper;
 using BlogTemplate.Application.Abstractions.Enums;
-using BlogTemplate.Infrastructure.Data;
-using Xunit;
 using BlogTemplate.Application.Features.Page.Queries.GetBySlug;
+using BlogTemplate.Infrastructure.Data;
 using BlogTemplate.Tests.Common.Extensions.DbContext.Page;
+using Xunit;
 
-namespace BlogTemplate.Tests.Features.Page.Queries
+namespace BlogTemplate.Tests.Features.Page.Queries;
+
+[Collection("PageQueryCollection")]
+public class GetPageBySlugQueryTest
 {
-    [Collection("PageQueryCollection")]
-    public class GetPageBySlugQueryTest
+
+    private readonly ApplicationDbContext Context;
+    private readonly IMapper Mapper;
+
+    public GetPageBySlugQueryTest(PageQueryTestFixture fixture)
     {
+        Context = fixture.Context;
+        Mapper = fixture.Mapper;
+    }
 
-        private readonly ApplicationDbContext Context;
-        private readonly IMapper Mapper;
+    [Fact]
+    public async Task GetPageBySlugQueryHandler_Success()
+    {
+        var handler = new GetPageBySlugQueryHandler(Context, Mapper);
 
-        public GetPageBySlugQueryTest(PageQueryTestFixture fixture)
-        {
-            Context = fixture.Context;
-            Mapper = fixture.Mapper;
-        }
+        var response = await handler.Handle(
+            new GetPageBySlugQuery()
+            {
+                Slug = DbContextAddPageExtension.PageSlug
+            },
+            CancellationToken.None);
 
-        [Fact]
-        public async Task GetPageBySlugQueryHandler_Success()
-        {
-            var handler = new GetPageBySlugQueryHandler(Context, Mapper);
+        Assert.True(response.Conclusion);
+        Assert.NotNull(response.Output);
+        Assert.NotNull(response.Output.Title);
+        Assert.Equal(DbContextAddPageExtension.PageId, response.Output.Id);
+    }
 
-            var response = await handler.Handle(
-                new GetPageBySlugQuery()
-                {
-                    Slug = DbContextAddPageExtension.PageSlug
-                },
-                CancellationToken.None);
+    [Fact]
+    public async Task GetPageBySlugQueryHandler_FailOnWrongSlug()
+    {
+        var handler = new GetPageBySlugQueryHandler(Context, Mapper);
 
-            Assert.True(response.Conclusion);
-            Assert.NotNull(response.Output);
-            Assert.NotNull(response.Output.Title);
-            Assert.Equal(DbContextAddPageExtension.PageId, response.Output.Id);
-        }
+        var response = await handler.Handle(
+            new GetPageBySlugQuery()
+            {
+                Slug = Guid.NewGuid().ToString()
+            },
+            CancellationToken.None);
 
-        [Fact]
-        public async Task GetPageBySlugQueryHandler_FailOnWrongSlug()
-        {
-            var handler = new GetPageBySlugQueryHandler(Context, Mapper);
-
-            var response = await handler.Handle(
-                new GetPageBySlugQuery()
-                {
-                    Slug = Guid.NewGuid().ToString()
-                },
-                CancellationToken.None);
-
-            Assert.False(response.Conclusion);
-            Assert.Null(response.Output);
-            Assert.Equal(ErrorType.NotFound, response.ErrorDescription?.ErrorType);
-        }
+        Assert.False(response.Conclusion);
+        Assert.Null(response.Output);
+        Assert.Equal(ErrorType.NotFound, response.ErrorDescription?.ErrorType);
     }
 }

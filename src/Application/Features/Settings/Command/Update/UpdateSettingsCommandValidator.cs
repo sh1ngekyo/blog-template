@@ -1,13 +1,12 @@
 ﻿using FluentValidation;
 
-namespace BlogTemplate.Application.Features.Settings.Commands.Update
+namespace BlogTemplate.Application.Features.Settings.Commands.Update;
+
+public class UpdateSettingsCommandValidator : AbstractValidator<UpdateSettingsCommand>
 {
-    public class UpdateSettingsCommandValidator : AbstractValidator<UpdateSettingsCommand>
+    public UpdateSettingsCommandValidator()
     {
-        public UpdateSettingsCommandValidator()
-        {
-            RuleFor(x => x.Id).NotEmpty();
-            RuleFor(x => x.SiteName).NotNull().NotEmpty();
-        }
+        RuleFor(x => x.Id).NotEmpty();
+        RuleFor(x => x.SiteName).NotNull().NotEmpty();
     }
 }

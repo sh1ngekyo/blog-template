@@ -1,13 +1,12 @@
 ﻿using FluentValidation;
 
-namespace BlogTemplate.Application.Features.Profile.Commands.ResetPassword
+namespace BlogTemplate.Application.Features.Profile.Commands.ResetPassword;
+
+public class ResetPasswordCommandValidator : AbstractValidator<ResetPasswordCommand>
 {
-    public class ResetPasswordCommandValidator : AbstractValidator<ResetPasswordCommand>
+    public ResetPasswordCommandValidator()
     {
-        public ResetPasswordCommandValidator()
-        {
-            RuleFor(x => x.UserName).NotNull().NotEmpty();
-            RuleFor(x => x.NewPassword).NotNull().NotEmpty();
-        }
+        RuleFor(x => x.UserName).NotNull().NotEmpty();
+        RuleFor(x => x.NewPassword).NotNull().NotEmpty();
     }
 }

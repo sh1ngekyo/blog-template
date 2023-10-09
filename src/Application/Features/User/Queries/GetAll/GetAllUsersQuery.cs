@@ -2,9 +2,8 @@
 using BlogTemplate.Application.DataTransfer.User;
 using MediatR;
 
-namespace BlogTemplate.Application.Features.User.Queries.GetAll
+namespace BlogTemplate.Application.Features.User.Queries.GetAll;
+
+public class GetAllUsersQuery : IRequest<Result<List<UserDto>>>
 {
-    public class GetAllUsersQuery : IRequest<Result<List<UserDto>>>
-    {
-    }
 }

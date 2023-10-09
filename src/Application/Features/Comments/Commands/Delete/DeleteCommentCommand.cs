@@ -2,10 +2,9 @@
 
 using MediatR;
 
-namespace BlogTemplate.Application.Features.Comments.Commands.Delete
+namespace BlogTemplate.Application.Features.Comments.Commands.Delete;
+
+public class DeleteCommentCommand : IRequest<Result<CommentsBaseCommandResponse>>
 {
-    public class DeleteCommentCommand : IRequest<Result<CommentsBaseCommandResponse>>
-    {
-        public int CommentId { get; set; }
-    }
+    public int CommentId { get; set; }
 }

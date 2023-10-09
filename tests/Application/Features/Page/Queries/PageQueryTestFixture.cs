@@ -9,31 +9,27 @@ using BlogTemplate.Tests.Common.Extensions.DbContext.Settings;
 
 using Xunit;
 
-namespace BlogTemplate.Tests.Features.Page.Queries
+namespace BlogTemplate.Tests.Features.Page.Queries;
+
+public class PageQueryTestFixture : IDisposable
 {
-    public class PageQueryTestFixture : IDisposable
+    public ApplicationDbContext Context;
+    public IMapper Mapper;
+
+    public PageQueryTestFixture()
     {
-        public ApplicationDbContext Context;
-        public IMapper Mapper;
-
-        public PageQueryTestFixture()
-        {
-            Context = DbContextBuilder.NewContext.AddPage().AddSettings().Build();
-            var configurationProvider = new MapperConfiguration(cfg =>
-            {
-                cfg.AddProfile(new AssemblyMappingProfile(
-                    typeof(IApplicationDbContext).Assembly));
-            });
-            Mapper = configurationProvider.CreateMapper();
-        }
-
-        public void Dispose()
-        {
-            Context.Database.EnsureDeleted();
-            Context.Dispose();
-        }
+        Context = DbContextBuilder.NewContext.AddPage().AddSettings().Build();
+        var configurationProvider = new MapperConfiguration(cfg => cfg.AddProfile(new AssemblyMappingProfile(
+                typeof(IApplicationDbContext).Assembly)));
+        Mapper = configurationProvider.CreateMapper();
     }
 
-    [CollectionDefinition("PageQueryCollection")]
-    public class PageQueryCollection : ICollectionFixture<PageQueryTestFixture> { }
+    public void Dispose()
+    {
+        Context.Database.EnsureDeleted();
+        Context.Dispose();
+    }
 }
+
+[CollectionDefinition("PageQueryCollection")]
+public class PageQueryCollection : ICollectionFixture<PageQueryTestFixture> { }

@@ -1,29 +1,27 @@
-﻿using AutoMapper;
-
+﻿using System.Reflection;
+using AutoMapper;
 using BlogTemplate.Application.Abstractions.Mappings;
-using System.Reflection;
 
-namespace BlogTemplate.Application.Common.Mappings
+namespace BlogTemplate.Application.Common.Mappings;
+
+public class AssemblyMappingProfile : Profile
 {
-    public class AssemblyMappingProfile : Profile
+    public AssemblyMappingProfile(Assembly assembly) =>
+        ApplyMappingsFromAssembly(assembly);
+
+    private void ApplyMappingsFromAssembly(Assembly assembly)
     {
-        public AssemblyMappingProfile(Assembly assembly) =>
-            ApplyMappingsFromAssembly(assembly);
+        var types = assembly.GetExportedTypes()
+            .Where(type => type.GetInterfaces()
+                .Any(i => i.IsGenericType &&
+                i.GetGenericTypeDefinition() == typeof(IMapWith<>)))
+            .ToList();
 
-        private void ApplyMappingsFromAssembly(Assembly assembly)
+        foreach (var type in types)
         {
-            var types = assembly.GetExportedTypes()
-                .Where(type => type.GetInterfaces()
-                    .Any(i => i.IsGenericType &&
-                    i.GetGenericTypeDefinition() == typeof(IMapWith<>)))
-                .ToList();
-
-            foreach (var type in types)
-            {
-                var instance = Activator.CreateInstance(type);
-                var methodInfo = type.GetMethod("Mapping");
-                methodInfo?.Invoke(instance, new object[] { this });
-            }
+            var instance = Activator.CreateInstance(type);
+            var methodInfo = type.GetMethod("Mapping");
+            methodInfo?.Invoke(instance, new object[] { this });
         }
     }
 }

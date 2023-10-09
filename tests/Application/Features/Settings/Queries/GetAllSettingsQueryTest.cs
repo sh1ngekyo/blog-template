@@ -4,32 +4,31 @@ using BlogTemplate.Infrastructure.Data;
 
 using Xunit;
 
-namespace BlogTemplate.Tests.Features.Settings.Queries
+namespace BlogTemplate.Tests.Features.Settings.Queries;
+
+[Collection("SettingsQueryCollection")]
+public class GetAllSettingsQueryTest
 {
-    [Collection("SettingsQueryCollection")]
-    public class GetAllSettingsQueryTest
+    private readonly ApplicationDbContext _context;
+    private readonly IMapper _mapper;
+
+    public GetAllSettingsQueryTest(SettingsQueryTestFixture fixture)
     {
-        private readonly ApplicationDbContext Context;
-        private readonly IMapper Mapper;
+        _context = fixture.Context;
+        _mapper = fixture.Mapper;
+    }
 
-        public GetAllSettingsQueryTest(SettingsQueryTestFixture fixture)
-        {
-            Context = fixture.Context;
-            Mapper = fixture.Mapper;
-        }
+    [Fact]
+    public async Task GetAllSettingsQueryHandler_Success()
+    {
+        var handler = new GetAllSettingsQueryHandler(_context, _mapper);
 
-        [Fact]
-        public async Task GetAllSettingsQueryHandler_Success()
-        {
-            var handler = new GetAllSettingsQueryHandler(Context, Mapper);
+        var response = await handler.Handle(
+            new GetAllSettingsQuery(),
+            CancellationToken.None);
 
-            var response = await handler.Handle(
-                new GetAllSettingsQuery(),
-                CancellationToken.None);
-
-            Assert.True(response.Conclusion);
-            Assert.NotNull(response.Output);
-            Assert.NotEmpty(response.Output);
-        }
+        Assert.True(response.Conclusion);
+        Assert.NotNull(response.Output);
+        Assert.NotEmpty(response.Output);
     }
 }

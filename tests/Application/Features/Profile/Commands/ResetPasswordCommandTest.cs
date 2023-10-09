@@ -4,42 +4,41 @@ using BlogTemplate.Tests.Common;
 
 using Xunit;
 
-namespace BlogTemplate.Tests.Features.Profile.Commands
+namespace BlogTemplate.Tests.Features.Profile.Commands;
+
+public class ResetPasswordCommandTest : TestUserManagerCommandBase
 {
-    public class ResetPasswordCommandTest : TestUserManagerCommandBase
+    public ResetPasswordCommandTest()
+        : base(UserManagerFactory.Create())
     {
-        public ResetPasswordCommandTest()
-            : base(UserManagerFactory.Create())
+    }
+
+    [Fact]
+    public async Task ResetPasswordCommandHandler_Success()
+    {
+        var handler = new ResetPasswordCommandHandler(UserManager);
+
+        var response = await handler.Handle(new ResetPasswordCommand
         {
-        }
+            UserName = UserManagerFactory.UserA,
+            NewPassword = Guid.NewGuid().ToString()
+        }, CancellationToken.None);
 
-        [Fact]
-        public async Task ResetPasswordCommandHandler_Success()
+        Assert.True(response.Conclusion);
+    }
+
+    [Fact]
+    public async Task ResetPasswordCommandHandler_FailedWhenUserNotFound()
+    {
+        var handler = new ResetPasswordCommandHandler(UserManager);
+
+        var response = await handler.Handle(new ResetPasswordCommand
         {
-            var handler = new ResetPasswordCommandHandler(UserManager);
+            UserName = Guid.NewGuid().ToString(),
+            NewPassword = Guid.NewGuid().ToString()
+        }, CancellationToken.None);
 
-            var response = await handler.Handle(new ResetPasswordCommand
-            {
-                UserName = UserManagerFactory.UserA,
-                NewPassword = Guid.NewGuid().ToString()
-            }, CancellationToken.None);
-
-            Assert.True(response.Conclusion);
-        }
-
-        [Fact]
-        public async Task ResetPasswordCommandHandler_FailedWhenUserNotFound()
-        {
-            var handler = new ResetPasswordCommandHandler(UserManager);
-
-            var response = await handler.Handle(new ResetPasswordCommand
-            {
-                UserName = Guid.NewGuid().ToString(),
-                NewPassword = Guid.NewGuid().ToString()
-            }, CancellationToken.None);
-
-            Assert.False(response.Conclusion);
-            Assert.Equal(ErrorType.NotFound, response.ErrorDescription?.ErrorType);
-        }
+        Assert.False(response.Conclusion);
+        Assert.Equal(ErrorType.NotFound, response.ErrorDescription?.ErrorType);
     }
 }

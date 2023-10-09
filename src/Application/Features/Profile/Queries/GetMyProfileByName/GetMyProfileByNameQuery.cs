@@ -3,10 +3,9 @@ using BlogTemplate.Application.DataTransfer.User;
 
 using MediatR;
 
-namespace BlogTemplate.Application.Features.Profile.Queries.GetMyProfileByName
+namespace BlogTemplate.Application.Features.Profile.Queries.GetMyProfileByName;
+
+public class GetMyProfileByNameQuery : IRequest<Result<UserDto>>
 {
-    public class GetMyProfileByNameQuery : IRequest<Result<UserDto>>
-    {
-        public string? UserName { get; set; }
-    }
+    public string? UserName { get; set; }
 }

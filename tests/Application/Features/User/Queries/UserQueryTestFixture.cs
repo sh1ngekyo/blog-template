@@ -8,25 +8,21 @@ using BlogTemplate.Tests.Common;
 
 using Xunit;
 
-namespace BlogTemplate.Tests.Features.User.Queries
+namespace BlogTemplate.Tests.Features.User.Queries;
+
+public class UserQueryTestFixture
 {
-    public class UserQueryTestFixture
+    public IMapper Mapper;
+    public IUserManagerProxy<ApplicationUser> UserManager;
+
+    public UserQueryTestFixture()
     {
-        public IMapper Mapper;
-        public IUserManagerProxy<ApplicationUser> UserManager;
-
-        public UserQueryTestFixture()
-        {
-            UserManager = UserManagerFactory.Create();
-            var configurationProvider = new MapperConfiguration(cfg =>
-            {
-                cfg.AddProfile(new AssemblyMappingProfile(
-                    typeof(IApplicationDbContext).Assembly));
-            });
-            Mapper = configurationProvider.CreateMapper();
-        }
+        UserManager = UserManagerFactory.Create();
+        var configurationProvider = new MapperConfiguration(cfg => cfg.AddProfile(new AssemblyMappingProfile(
+                typeof(IApplicationDbContext).Assembly)));
+        Mapper = configurationProvider.CreateMapper();
     }
-
-    [CollectionDefinition("UserQueryCollection")]
-    public class UserQueryCollection : ICollectionFixture<UserQueryTestFixture> { }
 }
+
+[CollectionDefinition("UserQueryCollection")]
+public class UserQueryCollection : ICollectionFixture<UserQueryTestFixture> { }

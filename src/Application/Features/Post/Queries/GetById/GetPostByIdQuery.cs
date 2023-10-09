@@ -2,10 +2,9 @@
 using BlogTemplate.Application.DataTransfer.Post;
 using MediatR;
 
-namespace BlogTemplate.Application.Features.Post.Queries.GetById
+namespace BlogTemplate.Application.Features.Post.Queries.GetById;
+
+public class GetPostByIdQuery : IRequest<Result<PostDto>>
 {
-    public class GetPostByIdQuery : IRequest<Result<PostDto>>
-    {
-        public int Id { get; set; }
-    }
+    public int Id { get; set; }
 }

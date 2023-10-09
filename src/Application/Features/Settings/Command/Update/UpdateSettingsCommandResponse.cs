@@ -1,7 +1,6 @@
-﻿namespace BlogTemplate.Application.Features.Settings.Commands.Update
+﻿namespace BlogTemplate.Application.Features.Settings.Commands.Update;
+
+public class UpdateSettingsCommandResponse
 {
-    public class UpdateSettingsCommandResponse
-    {
-        public string? RemoveThumbnailUrl { get; set; }
-    }
+    public string? RemoveThumbnailUrl { get; set; }
 }

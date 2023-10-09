@@ -1,10 +1,9 @@
 ﻿using BlogTemplate.Application.Abstractions;
 using MediatR;
 
-namespace BlogTemplate.Application.Features.User.Commands.Delete
+namespace BlogTemplate.Application.Features.User.Commands.Delete;
+
+public class DeleteUserCommand : IRequest<Result<DeleteUserCommandResponse>>
 {
-    public class DeleteUserCommand : IRequest<Result<DeleteUserCommandResponse>>
-    {
-        public string? Id { get; set; }
-    }
+    public string? Id { get; set; }
 }

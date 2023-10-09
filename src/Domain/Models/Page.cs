@@ -1,12 +1,11 @@
-﻿namespace BlogTemplate.Domain.Models
+﻿namespace BlogTemplate.Domain.Models;
+
+public class Page
 {
-    public class Page
-    {
-        public int Id { get; set; }
-        public string? Title { get; set; }
-        public string? ShortDescription { get; set; }
-        public string? Description { get; set; }
-        public string? Slug { get; set; }
-        public string? ThumbnailUrl { get; set; }
-    }
+    public int Id { get; set; }
+    public string? Title { get; set; }
+    public string? ShortDescription { get; set; }
+    public string? Description { get; set; }
+    public string? Slug { get; set; }
+    public string? ThumbnailUrl { get; set; }
 }

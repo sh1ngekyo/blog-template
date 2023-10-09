@@ -1,7 +1,6 @@
-﻿namespace BlogTemplate.Application.Features.User.Commands.ChangeRole
+﻿namespace BlogTemplate.Application.Features.User.Commands.ChangeRole;
+
+public class ChangeUserRoleCommandResponse
 {
-    public class ChangeUserRoleCommandResponse
-    {
-        public string? ResultMessage { get; set; }
-    }
+    public string? ResultMessage { get; set; }
 }
