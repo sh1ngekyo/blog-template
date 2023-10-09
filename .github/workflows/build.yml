@@ -1,6 +1,10 @@
 name: Build
 
 on: [push]
+    paths-ignore:
+      - .gitignore
+      - LICENSE
+      - README.md
 
 env:
   DOTNET_VERSION: '7.0.x'
