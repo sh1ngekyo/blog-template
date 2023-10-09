@@ -36,69 +36,69 @@ This template can be used to create a blog/forum based on Asp.net core (API or M
 ## Home Page
 <details> 
   <summary><h3>Top first page</h3></summary>
-  <img src="https://github.com/sh1ngekyo/blog-template/blob/master/Docs/Images/HomeFirstPage.png">
+  <img src="https://github.com/sh1ngekyo/blog-template/blob/master/docs/Images/HomeFirstPage.png">
 </details>
 <details> 
   <summary><h3>Bottom first page</h3></summary>
-  <img src="https://github.com/sh1ngekyo/blog-template/blob/master/Docs/Images/HomeBottomPage.png">
+  <img src="https://github.com/sh1ngekyo/blog-template/blob/master/docs/Images/HomeBottomPage.png">
 </details>
 
 ## SignIn/SignUp
 <details> 
   <summary><h3>SignIn</h3></summary>
-  <img src="https://github.com/sh1ngekyo/blog-template/blob/master/Docs/Images/Login.png">
+  <img src="https://github.com/sh1ngekyo/blog-template/blob/master/docs/Images/Login.png">
 </details>
 <details> 
   <summary><h3>SignUp</h3></summary>
-  <img src="https://github.com/sh1ngekyo/blog-template/blob/master/Docs/Images/Register.png">
+  <img src="https://github.com/sh1ngekyo/blog-template/blob/master/docs/Images/Register.png">
 </details>
 
 ## Dashboard Differences
 <details> 
   <summary><h3>Admin</h3></summary>
-  <img src="https://github.com/sh1ngekyo/blog-template/blob/master/Docs/Images/AdminDashboard.png">
+  <img src="https://github.com/sh1ngekyo/blog-template/blob/master/docs/Images/AdminDashboard.png">
 </details>
 <details> 
   <summary><h3>Author</h3></summary>
-  <img src="https://github.com/sh1ngekyo/blog-template/blob/master/Docs/Images/AuthorDashboard.png">
+  <img src="https://github.com/sh1ngekyo/blog-template/blob/master/docs/Images/AuthorDashboard.png">
 </details>
 
 ## Dashboard Posts
 <details> 
   <summary><h3>Add Post</h3></summary>
-  <img src="https://github.com/sh1ngekyo/blog-template/blob/master/Docs/Images/AddPost.png">
+  <img src="https://github.com/sh1ngekyo/blog-template/blob/master/docs/Images/AddPost.png">
 </details>
 <details> 
   <summary><h3>Edit Post</h3></summary>
-  <img src="https://github.com/sh1ngekyo/blog-template/blob/master/Docs/Images/EditPost.png">
+  <img src="https://github.com/sh1ngekyo/blog-template/blob/master/docs/Images/EditPost.png">
 </details>
 
 ## Dashboard Options
 <details> 
   <summary><h3>Users</h3></summary>
-  <img src="https://github.com/sh1ngekyo/blog-template/blob/master/Docs/Images/Users.png">
+  <img src="https://github.com/sh1ngekyo/blog-template/blob/master/docs/Images/Users.png">
 </details>
 <details> 
   <summary><h3>Settings</h3></summary>
-  <img src="https://github.com/sh1ngekyo/blog-template/blob/master/Docs/Images/Settings.png">
+  <img src="https://github.com/sh1ngekyo/blog-template/blob/master/docs/Images/Settings.png">
 </details>
 <details> 
   <summary><h3>Page Edit</h3></summary>
-  <img src="https://github.com/sh1ngekyo/blog-template/blob/master/Docs/Images/PagesEdit.png">
+  <img src="https://github.com/sh1ngekyo/blog-template/blob/master/docs/Images/PagesEdit.png">
 </details>
 
 ## Profile
 <details> 
   <summary><h3>Edit</h3></summary>
-  <img src="https://github.com/sh1ngekyo/blog-template/blob/master/Docs/Images/ProfileEdit.png">
+  <img src="https://github.com/sh1ngekyo/blog-template/blob/master/docs/Images/ProfileEdit.png">
 </details>
 <details> 
   <summary><h3>Public View</h3></summary>
-  <img src="https://github.com/sh1ngekyo/blog-template/blob/master/Docs/Images/PublicProfile.png">
+  <img src="https://github.com/sh1ngekyo/blog-template/blob/master/docs/Images/PublicProfile.png">
 </details>
 
 ## Comments
 <details> 
   <summary><h3>View from user with Author role</h3></summary>
-  <img src="https://github.com/sh1ngekyo/blog-template/blob/master/Docs/Images/Comments.png">
+  <img src="https://github.com/sh1ngekyo/blog-template/blob/master/docs/Images/Comments.png">
 </details>

@@ -3,15 +3,21 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33414.496
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlogTemplate.Domain", "BlogTemplate.Domain\BlogTemplate.Domain.csproj", "{F3EF8B51-0169-4320-AB96-4607E8756243}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlogTemplate.Domain", "src\Domain\BlogTemplate.Domain.csproj", "{F3EF8B51-0169-4320-AB96-4607E8756243}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlogTemplate.Application", "BlogTemplate.Application\BlogTemplate.Application.csproj", "{CAC47835-A583-4714-A57C-E8176A9DADC0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlogTemplate.Application", "src\Application\BlogTemplate.Application.csproj", "{CAC47835-A583-4714-A57C-E8176A9DADC0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlogTemplate.Infrastructure", "BlogTemplate.Infrastructure\BlogTemplate.Infrastructure.csproj", "{760CFE3D-76B5-4635-94E2-6544118D3830}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlogTemplate.Infrastructure", "src\Infrastructure\BlogTemplate.Infrastructure.csproj", "{760CFE3D-76B5-4635-94E2-6544118D3830}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlogTemplate.Presentation", "BlogTemplate.Presentation\BlogTemplate.Presentation.csproj", "{84FB03D3-11FE-4641-B600-635489F214D8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlogTemplate.Presentation", "src\Presentation\BlogTemplate.Presentation.csproj", "{84FB03D3-11FE-4641-B600-635489F214D8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlogTemplate.Tests", "BlogTemplate.Tests\BlogTemplate.Tests.csproj", "{11DAA603-E60A-49A1-91EA-BC2986C68F51}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlogTemplate.Tests", "tests\Application\BlogTemplate.Tests.csproj", "{11DAA603-E60A-49A1-91EA-BC2986C68F51}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FB231D34-BD57-4ED4-8742-1F285A44D7CD}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		Directory.Build.props = Directory.Build.props
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

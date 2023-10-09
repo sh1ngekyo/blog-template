@@ -1,6 +1,6 @@
 name: Build
 
-on: [push]
+on: [push, pull_request]
 
 env:
   DOTNET_VERSION: '7.0.x'
@@ -23,3 +23,5 @@ jobs:
       run: dotnet restore
     - name: Build
       run: dotnet build --configuration Release --no-restore
+    - name: Test
+      run: dotnet build --configuration Release --no-restore & dotnet test --no-restore --verbosity normal
