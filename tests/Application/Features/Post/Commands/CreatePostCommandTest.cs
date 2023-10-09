@@ -34,7 +34,7 @@ namespace BlogTemplate.Tests.Features.Post.Commands
             Assert.True(response.Conclusion);
             Assert.Equal(ResultType.Created, response.ResultType);
 
-            var post = Context.Posts.FirstOrDefault(x => x.ApplicationUserId == UserManagerFactory.UserAId);
+            var post = Context.Posts?.FirstOrDefault(x => x.ApplicationUserId == UserManagerFactory.UserAId);
 
             Assert.NotNull(post);
             Assert.Equal(1, post.Id);

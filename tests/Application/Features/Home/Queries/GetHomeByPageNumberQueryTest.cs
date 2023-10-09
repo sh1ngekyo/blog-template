@@ -86,7 +86,7 @@ namespace BlogTemplate.Tests.Features.Home.Queries
                 CancellationToken.None);
 
             Assert.False(response.Conclusion);
-            Assert.Equal(ErrorType.NotValid, response.ErrorDescription.ErrorType);
+            Assert.Equal(ErrorType.NotValid, response.ErrorDescription?.ErrorType);
         }
     }
 }

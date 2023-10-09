@@ -22,7 +22,7 @@ namespace BlogTemplate.Presentation.Areas.Dashboard.Controllers
     public class PostController : BaseController
     {
         private readonly ImageUtility _imageUtility;
-        public INotyfService _notification { get; }
+        private readonly INotyfService _notification;
 
         public PostController(INotyfService notyfService,
                                 ImageUtility imageUtility)
@@ -43,7 +43,7 @@ namespace BlogTemplate.Presentation.Areas.Dashboard.Controllers
             var pageNumber = (page ?? 1);
 
             return View(
-                await response.Output
+                await response.Output!
                 .OrderByDescending(x => x.CreatedDate)
                 .ToPagedListAsync(pageNumber, pageSize));
         }
@@ -85,11 +85,11 @@ namespace BlogTemplate.Presentation.Areas.Dashboard.Controllers
             });
             if (!response.Conclusion)
             {
-                _notification.Error(response.ErrorDescription.ErrorMessage);
+                _notification.Error(response.ErrorDescription?.ErrorMessage);
                 return RedirectToAction("Index");
 
             }
-            _imageUtility.Remove(response.Output.RemoveThumbnailUrl);
+            _imageUtility.Remove(response.Output?.RemoveThumbnailUrl);
             _notification.Success("Post Deleted Successfully");
             return RedirectToAction("Index", "Post", new { area = "Dashboard" });
         }
@@ -100,14 +100,14 @@ namespace BlogTemplate.Presentation.Areas.Dashboard.Controllers
             var postResponse = await Mediator.Send(new GetPostByIdQuery { Id = id });
             if (!postResponse.Conclusion)
             {
-                _notification.Error(postResponse.ErrorDescription.ErrorMessage);
+                _notification.Error(postResponse.ErrorDescription?.ErrorMessage);
                 return RedirectToAction("Index");
             }
 
             var userResponse = await Mediator.Send(new GetUserByNameQuery { UserName = User.Identity!.Name });
 
-            if (userResponse.Output.Role != WebsiteRoles.WebsiteAdmin
-                && userResponse.Output!.UserName != postResponse.Output.AuthorName)
+            if (userResponse.Output?.Role != WebsiteRoles.WebsiteAdmin
+                && userResponse.Output!.UserName != postResponse.Output?.AuthorName)
             {
                 _notification.Error("You are not authorized");
                 return RedirectToAction("Index");
@@ -115,7 +115,7 @@ namespace BlogTemplate.Presentation.Areas.Dashboard.Controllers
 
             var createPostDto = new CreatePostDto()
             {
-                Id = postResponse.Output.Id,
+                Id = postResponse.Output!.Id,
                 Title = postResponse.Output.Title,
                 ShortDescription = postResponse.Output.ShortDescription,
                 Description = postResponse.Output.Description,
@@ -143,10 +143,10 @@ namespace BlogTemplate.Presentation.Areas.Dashboard.Controllers
             });
             if (!response.Conclusion)
             {
-                _notification.Error(response.ErrorDescription.ErrorMessage);
+                _notification.Error(response.ErrorDescription?.ErrorMessage);
                 return View();
             }
-            _imageUtility.Remove(response.Output.RemoveThumbnailUrl);
+            _imageUtility.Remove(response.Output?.RemoveThumbnailUrl);
             _notification.Success("Post updated succesfully");
             return RedirectToAction("Index", "Post", new { area = "Dashboard" });
         }

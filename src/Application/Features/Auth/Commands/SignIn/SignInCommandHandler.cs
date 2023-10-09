@@ -16,7 +16,7 @@ namespace BlogTemplate.Application.Features.Auth.Commands.SignIn
         public async Task<Result> Handle(SignInCommand request,
             CancellationToken cancellationToken)
         {
-            var existingUser = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == request.Username);
+            var existingUser = await _userManager.Users.FirstOrDefaultAsync(x => x!.UserName == request.Username);
             if (existingUser == null)
             {
                 return new Result(ErrorType.NotValid, "Username does not exist");
@@ -27,7 +27,7 @@ namespace BlogTemplate.Application.Features.Auth.Commands.SignIn
                 return new Result(ErrorType.NotValid, "Password does not match");
             }
 
-            await _signInManager.PasswordSignInAsync(request.Username, request.Password, request.RememberMe, request.IsLockout);
+            await _signInManager.PasswordSignInAsync(request.Username!, request.Password!, request.RememberMe, request.IsLockout);
             return new Result(ResultType.Ok);
         }
     }

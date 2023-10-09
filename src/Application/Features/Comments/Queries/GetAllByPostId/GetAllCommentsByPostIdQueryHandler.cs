@@ -18,7 +18,7 @@ namespace BlogTemplate.Application.Features.Comments.Queries.GetAllByPostId
         public async Task<Result<List<Domain.Models.Comment>>> Handle(GetAllCommentsByPostIdQuery request,
             CancellationToken cancellationToken)
         {
-            var comments = await _context.Comments
+            var comments = await _context.Comments!
             .Where(x => x.PostId == request.PostId)
             .AsNoTrackingWithIdentityResolution()
             .Include(c => c.Children)

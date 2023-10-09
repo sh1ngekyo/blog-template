@@ -18,8 +18,8 @@ namespace BlogTemplate.Presentation.Areas.Dashboard.Controllers
     [Area("Dashboard")]
     public class UserController : BaseController
     {
-        private readonly ImageUtility _imageUtility;
-        public INotyfService _notification { get; }
+        private readonly ImageUtility _imageUtility; 
+        private readonly INotyfService _notification;
         public UserController(INotyfService notyfService, ImageUtility imageUtility)
         {
             _notification = notyfService;
@@ -32,7 +32,7 @@ namespace BlogTemplate.Presentation.Areas.Dashboard.Controllers
         public async Task<IActionResult> Index()
         {
             var response = await Mediator.Send(new GetAllUsersQuery());
-            return View(response.Output.Where(x => x.UserName != User.Identity!.Name).ToList());
+            return View(response.Output!.Where(x => x.UserName != User.Identity!.Name).ToList());
         }
 
         [Authorize(Roles = "Admin")]
@@ -49,8 +49,8 @@ namespace BlogTemplate.Presentation.Areas.Dashboard.Controllers
             }
             else
             {
-                _imageUtility.Remove(response.Output.RemoveThumbnailUrl);
-                _notification.Success($"User {response.Output.DeletedUserName!} has been deleted");
+                _imageUtility.Remove(response.Output?.RemoveThumbnailUrl);
+                _notification.Success($"User {response.Output?.DeletedUserName!} has been deleted");
             }
             return RedirectToAction("Index");
         }
@@ -69,7 +69,7 @@ namespace BlogTemplate.Presentation.Areas.Dashboard.Controllers
                 _notification.Error("User doesnot exsits");
                 return RedirectToAction("Index");
             }
-            _notification.Success(response.Output.ResultMessage);
+            _notification.Success(response.Output?.ResultMessage);
             return RedirectToAction("Index");
         }
 
@@ -97,7 +97,7 @@ namespace BlogTemplate.Presentation.Areas.Dashboard.Controllers
             });
             if (!response.Conclusion)
             {
-                _notification.Error(response.ErrorDescription.ErrorMessage);
+                _notification.Error(response.ErrorDescription?.ErrorMessage);
                 return View(signUpDto);
             }
             _notification.Success("Registration completed");
@@ -125,7 +125,7 @@ namespace BlogTemplate.Presentation.Areas.Dashboard.Controllers
             });
             if (!response.Conclusion)
             {
-                _notification.Error(response.ErrorDescription.ErrorMessage);
+                _notification.Error(response.ErrorDescription?.ErrorMessage);
                 return View(signInDto);
             }
             _notification.Success("Login Successful");

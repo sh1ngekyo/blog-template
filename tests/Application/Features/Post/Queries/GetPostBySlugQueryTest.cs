@@ -14,10 +14,8 @@ namespace BlogTemplate.Tests.Features.Post.Queries
     {
         private readonly IMapper Mapper;
         private readonly ApplicationDbContext Context;
-        private readonly IUserManagerProxy<ApplicationUser> UserManager;
         public GetPostBySlugQueryTest(PostQueryTestFixture fixture)
         {
-            UserManager = fixture.UserManager;
             Mapper = fixture.Mapper;
             Context = fixture.Context;
         }
@@ -27,7 +25,7 @@ namespace BlogTemplate.Tests.Features.Post.Queries
         {
             var handler = new GetPostBySlugQueryHandler(Context, Mapper);
             var postId = 1;
-            var expectedSlug = Context.Posts.FirstOrDefault(x => x.Id == 1).Slug;
+            var expectedSlug = Context.Posts?.FirstOrDefault(x => x.Id == postId)?.Slug;
 
             var response = await handler.Handle(
                 new GetPostBySlugQuery()
@@ -56,7 +54,7 @@ namespace BlogTemplate.Tests.Features.Post.Queries
 
             Assert.False(response.Conclusion);
             Assert.Null(response.Output);
-            Assert.Equal(ErrorType.NotFound, response.ErrorDescription.ErrorType);
+            Assert.Equal(ErrorType.NotFound, response.ErrorDescription?.ErrorType);
         }
     }
 }

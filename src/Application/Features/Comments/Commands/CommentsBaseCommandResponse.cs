@@ -2,6 +2,6 @@
 {
     public class CommentsBaseCommandResponse
     {
-        public string PostSlug { get; set; }
+        public string? PostSlug { get; set; }
     }
 }

@@ -19,7 +19,7 @@ namespace BlogTemplate.Application.Common.Exceptions
 
         public Result AsResultObject()
         {
-            return new Result(ErrorType, Message, InnerException);
+            return new Result(ErrorType, Message, InnerException!);
         }
 
     }

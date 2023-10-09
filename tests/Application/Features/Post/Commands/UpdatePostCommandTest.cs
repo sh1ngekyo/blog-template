@@ -34,7 +34,7 @@ namespace BlogTemplate.Tests.Features.Post.Commands
             }, CancellationToken.None);
 
             Assert.False(response.Conclusion);
-            Assert.Equal(ErrorType.NotFound, response.ErrorDescription.ErrorType);
+            Assert.Equal(ErrorType.NotFound, response.ErrorDescription?.ErrorType);
         }
 
         [Fact]
@@ -45,8 +45,8 @@ namespace BlogTemplate.Tests.Features.Post.Commands
             var updatedDescription = "New description";
             var updatedShortDescription = "New short description";
             var updatedThumbnailUrl = "New thumbnailurl";
-            var post = await Context.Posts.FirstOrDefaultAsync(x => x.Id == idForUpdate);
-            string expectedThumbnail = new string(post.ThumbnailUrl);
+            var post = await Context.Posts!.FirstOrDefaultAsync(x => x.Id == idForUpdate);
+            string expectedThumbnail = new(post?.ThumbnailUrl);
             Assert.NotNull(post);
 
             var handler = new UpdatePostCommandHandler(Context);
@@ -61,7 +61,7 @@ namespace BlogTemplate.Tests.Features.Post.Commands
             }, CancellationToken.None);
 
             Assert.True(response.Conclusion);
-            Assert.Equal(expectedThumbnail, response.Output.RemoveThumbnailUrl);
+            Assert.Equal(expectedThumbnail, response.Output?.RemoveThumbnailUrl);
 
             Assert.Equal(post.ThumbnailUrl, updatedThumbnailUrl);
             Assert.Equal(post.ShortDescription, updatedShortDescription);

@@ -22,7 +22,7 @@ namespace BlogTemplate.Tests.Common.Extensions.Queriable
         public IQueryable<TElement> CreateQuery<TElement>(Expression expression) =>
             new AsyncQueryable<TElement>(Source.CreateQuery<TElement>(expression));
 
-        public object Execute(Expression expression) => Execute<T>(expression);
+        public object Execute(Expression expression) => Execute<T>(expression)!;
 
         public TResult Execute<TResult>(Expression expression) =>
             Source.Execute<TResult>(expression);

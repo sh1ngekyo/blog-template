@@ -28,13 +28,13 @@ namespace BlogTemplate.Tests.Features.Comments.Queries
             Assert.True(response.Conclusion);
             Assert.NotNull(response.Output);
             Assert.Equal(
-                Context.Comments.Where(x => x.PostId == 1 && x.ParentId == null).Count(),
+                Context.Comments?.Where(x => x.PostId == 1 && x.ParentId == null).Count(),
                 response.Output.Count);
             foreach(var comment in response.Output)
             {
                 Assert.Equal(
-                    Context.Comments.Where(x => x.ParentId == comment.CommentId).Count(),
-                    comment.Children.Count);
+                    Context.Comments?.Where(x => x.ParentId == comment.CommentId).Count(),
+                    comment.Children?.Count);
             }
         }
     }

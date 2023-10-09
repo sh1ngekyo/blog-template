@@ -25,7 +25,7 @@ namespace BlogTemplate.Tests.Features.Profile.Commands
             }, CancellationToken.None);
 
             Assert.True(response.Conclusion);
-            Assert.NotNull(response.Output.RemoveThumbnailUrl);
+            Assert.NotNull(response.Output?.RemoveThumbnailUrl);
             Assert.Equal("ThumbnailUrl", response.Output.RemoveThumbnailUrl);
         }
 
@@ -40,7 +40,7 @@ namespace BlogTemplate.Tests.Features.Profile.Commands
             }, CancellationToken.None);
 
             Assert.False(response.Conclusion);
-            Assert.Equal(ErrorType.NotFound, response.ErrorDescription.ErrorType);
+            Assert.Equal(ErrorType.NotFound, response.ErrorDescription?.ErrorType);
         }
     }
 }

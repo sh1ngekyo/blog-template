@@ -15,7 +15,7 @@ namespace BlogTemplate.Presentation.Areas.Dashboard.Controllers
     [Authorize(Roles = "Admin")]
     public class PageController : BaseController
     {
-        public INotyfService _notification { get; }
+        private readonly INotyfService _notification;
         private readonly ImageUtility _imageUtility;
 
         public PageController(INotyfService notification,
@@ -52,11 +52,11 @@ namespace BlogTemplate.Presentation.Areas.Dashboard.Controllers
             });
             if (response.Conclusion)
             {
-                _imageUtility.Remove(response.Output.RemoveThumbnailUrl);
+                _imageUtility.Remove(response.Output?.RemoveThumbnailUrl);
                 _notification.Success("About page updated succesfully");
                 return RedirectToAction("About", "Page", new { area = "Dashboard" });
             }
-            _notification.Error(response.ErrorDescription.ErrorMessage);
+            _notification.Error(response.ErrorDescription?.ErrorMessage);
             return View(pageDto);
         }
 
@@ -87,11 +87,11 @@ namespace BlogTemplate.Presentation.Areas.Dashboard.Controllers
             });
             if (response.Conclusion)
             {
-                _imageUtility.Remove(response.Output.RemoveThumbnailUrl);
+                _imageUtility.Remove(response.Output?.RemoveThumbnailUrl);
                 _notification.Success("Contact page updated succesfully");
                 return RedirectToAction("Contact", "Page", new { area = "Dashboard" });
             }
-            _notification.Error(response.ErrorDescription.ErrorMessage);
+            _notification.Error(response.ErrorDescription?.ErrorMessage);
             return View(pageDto);
         }
 
@@ -123,11 +123,11 @@ namespace BlogTemplate.Presentation.Areas.Dashboard.Controllers
             });
             if (response.Conclusion)
             {
-                _imageUtility.Remove(response.Output.RemoveThumbnailUrl);
+                _imageUtility.Remove(response.Output?.RemoveThumbnailUrl);
                 _notification.Success("Privacy page updated succesfully");
                 return RedirectToAction("Privacy", "Page", new { area = "Dashboard" });
             }
-            _notification.Error(response.ErrorDescription.ErrorMessage);
+            _notification.Error(response.ErrorDescription?.ErrorMessage);
             return View(pageDto);
         }
     }

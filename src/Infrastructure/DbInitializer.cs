@@ -23,11 +23,10 @@ namespace BlogTemplate.Infrastructure
 
         public void Initialize()
         {
-            string s = null;
-            if (!_roleManager.RoleExistsAsync(WebsiteRoles.WebsiteAdmin).GetAwaiter().GetResult())
+            if (!_roleManager.RoleExistsAsync(WebsiteRoles.WebsiteAdmin!).GetAwaiter().GetResult())
             {
-                _roleManager.CreateAsync(new IdentityRole(WebsiteRoles.WebsiteAdmin)).GetAwaiter().GetResult();
-                _roleManager.CreateAsync(new IdentityRole(WebsiteRoles.WebsiteAuthor)).GetAwaiter().GetResult();
+                _roleManager.CreateAsync(new IdentityRole(WebsiteRoles.WebsiteAdmin!)).GetAwaiter().GetResult();
+                _roleManager.CreateAsync(new IdentityRole(WebsiteRoles.WebsiteAuthor!)).GetAwaiter().GetResult();
                 _userManager.CreateAsync(new ApplicationUser()
                 {
                     UserName = "Admin",
@@ -39,7 +38,7 @@ namespace BlogTemplate.Infrastructure
                 var appUser = _context.ApplicationUsers!.FirstOrDefault(x => x.Email == "admin@gmail.com");
                 if (appUser != null)
                 {
-                    _userManager.AddToRoleAsync(appUser, WebsiteRoles.WebsiteAdmin).GetAwaiter().GetResult();
+                    _userManager.AddToRoleAsync(appUser, WebsiteRoles.WebsiteAdmin!).GetAwaiter().GetResult();
                 }
 
 

@@ -31,9 +31,9 @@ namespace BlogTemplate.Application.Common.Behaviors
 
                 if (failures.Any())
                 {
-                    TResponse response = new TResponse();
+                    TResponse response = new();
 
-                    response.Set(ErrorType.NotValid, failures.Select(s => s.ErrorMessage), null);
+                    response.Set(ErrorType.NotValid, failures.Select(s => s.ErrorMessage));
 
                     return Task.FromResult<TResponse>(response);
                 }

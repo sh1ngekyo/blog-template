@@ -19,8 +19,8 @@ namespace BlogTemplate.Tests.Features.Comments.Commands
         {
             var handler = new DeleteCommentCommandHandler(Context);
 
-            var comment = Context.Comments.Where(x => x.CommentId == 1).FirstOrDefault();
-            Assert.NotEmpty(Context.Comments.Where(x => x.ParentId == 1));
+            var comment = Context.Comments!.Where(x => x.CommentId == 1).FirstOrDefault();
+            Assert.NotEmpty(Context.Comments!.Where(x => x.ParentId == 1));
 
             var response = await handler.Handle(new DeleteCommentCommand
             {
@@ -29,10 +29,10 @@ namespace BlogTemplate.Tests.Features.Comments.Commands
 
             Assert.True(response.Conclusion);
             Assert.Equal(ResultType.Deleted, response.ResultType);
-            var post = Context.Posts.FirstOrDefault(x => x.Id == 1);
-            Assert.Equal(post.Slug, response.Output.PostSlug);
-            Assert.Empty(Context.Comments.Where(x => x.CommentId == comment.CommentId).ToList());
-            Assert.Empty(Context.Comments.Where(x => x.ParentId == comment.CommentId).ToList());
+            var post = Context.Posts!.FirstOrDefault(x => x.Id == 1);
+            Assert.Equal(post?.Slug, response.Output?.PostSlug);
+            Assert.Empty(Context.Comments!.Where(x => x.CommentId == comment!.CommentId).ToList());
+            Assert.Empty(Context.Comments!.Where(x => x.ParentId == comment!.CommentId).ToList());
         }
     }
 }

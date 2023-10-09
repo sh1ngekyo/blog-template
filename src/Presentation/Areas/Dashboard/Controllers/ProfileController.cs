@@ -18,7 +18,7 @@ namespace BlogTemplate.Presentation.Areas.Dashboard.Controllers
     public class ProfileController : BaseController
     {
         private readonly ImageUtility _imageUtility;
-        public INotyfService _notification { get; }
+        private readonly INotyfService _notification;
         public ProfileController(ImageUtility imageUtility,
                                     INotyfService notyfService)
         {
@@ -46,12 +46,12 @@ namespace BlogTemplate.Presentation.Areas.Dashboard.Controllers
 
             var profileEditDto = new ProfileEditDto()
             {
-                FirstName = userResponse.Output.FirstName,
-                LastName = userResponse.Output.LastName,
-                UserName = userResponse.Output.UserName,
-                Email = userResponse.Output.Email,
-                About = userResponse.Output.About,
-                ThumbnailUrl = userResponse.Output.ThumbnailUrl,
+                FirstName = userResponse.Output?.FirstName,
+                LastName = userResponse.Output?.LastName,
+                UserName = userResponse.Output?.UserName,
+                Email = userResponse.Output?.Email,
+                About = userResponse.Output?.About,
+                ThumbnailUrl = userResponse.Output?.ThumbnailUrl,
             };
 
             return View(profileEditDto);
@@ -76,11 +76,11 @@ namespace BlogTemplate.Presentation.Areas.Dashboard.Controllers
             });
             if (response.Conclusion)
             {
-                _imageUtility.Remove(response.Output.RemoveThumbnailUrl);
+                _imageUtility.Remove(response.Output?.RemoveThumbnailUrl);
                 _notification.Success("Profile updated succuful");
                 return RedirectToAction(nameof(Index));
             }
-            _notification.Error(response.ErrorDescription.ErrorMessage);
+            _notification.Error(response.ErrorDescription?.ErrorMessage);
             return View(profileEditDto);
         }
 
@@ -98,7 +98,7 @@ namespace BlogTemplate.Presentation.Areas.Dashboard.Controllers
             }
             var resetPasswordDto = new ResetPasswordDto()
             {
-                UserName = userResponse.Output.UserName
+                UserName = userResponse.Output?.UserName
             };
             return View(resetPasswordDto);
         }
@@ -117,7 +117,7 @@ namespace BlogTemplate.Presentation.Areas.Dashboard.Controllers
                 _notification.Success("Password reset succuful");
                 return RedirectToAction(nameof(Index));
             }
-            _notification.Error(response.ErrorDescription.ErrorMessage);
+            _notification.Error(response.ErrorDescription?.ErrorMessage);
             return View(resetPasswordDto);
         }
     }

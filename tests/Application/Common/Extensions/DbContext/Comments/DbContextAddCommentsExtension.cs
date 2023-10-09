@@ -6,7 +6,7 @@ namespace BlogTemplate.Tests.Common.Extensions.DbContext.Comments
     {
         public static ApplicationDbContext AddComments(this ApplicationDbContext context)
         {
-            context.ApplicationUsers.AddRange(
+            context.ApplicationUsers?.AddRange(
                 new Domain.Models.ApplicationUser
                 {
                     UserName = UserManagerFactory.UserA,
@@ -22,7 +22,7 @@ namespace BlogTemplate.Tests.Common.Extensions.DbContext.Comments
                     UserName = UserManagerFactory.UserC,
                     Id = UserManagerFactory.UserCId,
                 });
-            context.Posts.AddRange(
+            context.Posts?.AddRange(
                 new Domain.Models.Post
                 {
                     Id = 1,
@@ -37,7 +37,7 @@ namespace BlogTemplate.Tests.Common.Extensions.DbContext.Comments
                 }
             );
             var date = DateTimeOffset.Now;
-            context.Comments.AddRange(
+            context.Comments?.AddRange(
                 new Domain.Models.Comment
                 {
                     ApplicationUserId = UserManagerFactory.UserAId,
@@ -57,9 +57,9 @@ namespace BlogTemplate.Tests.Common.Extensions.DbContext.Comments
                 }
             );
             context.SaveChanges();
-            foreach (var comment in context.Comments.ToList())
+            foreach (var comment in context.Comments!.ToList())
             {
-                context.Comments.Add(new Domain.Models.Comment
+                context.Comments!.Add(new Domain.Models.Comment
                 {
                     ApplicationUserId = UserManagerFactory.UserCId,
                     ParentId = comment.CommentId,

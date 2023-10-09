@@ -29,10 +29,10 @@ namespace BlogTemplate.Tests.Features.Comments.Commands
             Assert.True(response.Conclusion);
             Assert.Equal(ResultType.Created, response.ResultType);
 
-            var post = Context.Posts.FirstOrDefault(x => x.Id == 1);
-            var comment = Context.Comments.Where(x => x.ApplicationUserId == "TestUserD").FirstOrDefault();
-            Assert.Equal(post.Slug, response.Output.PostSlug);
-            Assert.Equal("Test", comment.Content);
+            var post = Context.Posts!.FirstOrDefault(x => x.Id == 1);
+            var comment = Context.Comments!.Where(x => x.ApplicationUserId == "TestUserD").FirstOrDefault();
+            Assert.Equal(post?.Slug, response.Output?.PostSlug);
+            Assert.Equal("Test", comment?.Content);
         }
     }
 }

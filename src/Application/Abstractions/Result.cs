@@ -9,7 +9,7 @@ namespace BlogTemplate.Application.Abstractions
 
         public ResultType? ResultType { get; private set; }
 
-        public ErrorDescription ErrorDescription { get; private set; }
+        public ErrorDescription? ErrorDescription { get; private set; }
 
         public Result()
         {
@@ -26,58 +26,68 @@ namespace BlogTemplate.Application.Abstractions
         public Result(ErrorType errorType)
         {
             Conclusion = false;
-            ErrorDescription = new ErrorDescription();
-            ErrorDescription.ErrorType = errorType;
+            ErrorDescription = new ErrorDescription
+            {
+                ErrorType = errorType
+            };
         }
 
         public Result(ErrorType errorType, Exception exception)
         {
             Conclusion = false;
-            ErrorDescription = new ErrorDescription();
-            ErrorDescription.ErrorMessage = exception.Message;
-            ErrorDescription.Exception = exception;
-            ErrorDescription.ErrorType = errorType;
+            ErrorDescription = new ErrorDescription
+            {
+                ErrorMessage = exception.Message,
+                Exception = exception,
+                ErrorType = errorType
+            };
         }
 
-        public Result(ErrorType errorType, string errorMessage, Exception exception = null)
+        public Result(ErrorType errorType, string errorMessage, Exception? exception = null)
         {
             Conclusion = false;
-            ErrorDescription = new ErrorDescription();
-            ErrorDescription.ErrorMessage = errorMessage;
-            ErrorDescription.Exception = exception;
-            ErrorDescription.ErrorType = errorType;
+            ErrorDescription = new ErrorDescription
+            {
+                ErrorMessage = errorMessage,
+                Exception = exception!,
+                ErrorType = errorType
+            };
         }
 
-        public Result(ErrorType errorType, IEnumerable<string> errorMessages, Exception exception = null)
+        public Result(ErrorType errorType, IEnumerable<string> errorMessages, Exception? exception = null)
         {
             Conclusion = false;
-            ErrorDescription = new ErrorDescription();
-            ErrorDescription.ErrorMessage = string.Join("\n", errorMessages);
-            ErrorDescription.Exception = exception;
-            ErrorDescription.ErrorType = errorType;
+            ErrorDescription = new ErrorDescription
+            {
+                ErrorMessage = string.Join("\n", errorMessages),
+                Exception = exception!,
+                ErrorType = errorType
+            };
         }
 
         public Result EnsureSuccess()
         {
             if (!Conclusion)
-                throw ErrorDescription.AsException();
+                throw ErrorDescription!.AsException();
 
             return this;
         }
 
-        public void Set(ErrorType errorType, IEnumerable<string> errorMessages, Exception exception = null)
+        public void Set(ErrorType errorType, IEnumerable<string> errorMessages, Exception? exception = null)
         {
             Conclusion = false;
-            ErrorDescription = new ErrorDescription();
-            ErrorDescription.ErrorMessage = string.Join("\n", errorMessages);
-            ErrorDescription.Exception = exception;
-            ErrorDescription.ErrorType = errorType;
+            ErrorDescription = new ErrorDescription
+            {
+                ErrorMessage = string.Join("\n", errorMessages),
+                Exception = exception!,
+                ErrorType = errorType
+            };
         }
     }
 
     public class Result<T> : Result
     {
-        public T Output { get; private set; }
+        public T? Output { get; private set; }
 
 
         public Result() : base() { }
@@ -86,14 +96,14 @@ namespace BlogTemplate.Application.Abstractions
 
         public Result(ErrorType errorType) : base(errorType) { }
         public Result(ErrorType errorType, Exception exception) : base(errorType, exception) { }
-        public Result(ErrorType errorType, string errorMessage, Exception exception = null) : base(errorType, errorMessage, exception) { }
+        public Result(ErrorType errorType, string errorMessage, Exception? exception = null) : base(errorType, errorMessage, exception!) { }
 
-        public Result(ErrorDescription errorDescription) : base(errorDescription.ErrorType, errorDescription.ErrorMessage, errorDescription.Exception) { }
+        public Result(ErrorDescription errorDescription) : base(errorDescription.ErrorType, errorDescription.ErrorMessage!, errorDescription.Exception) { }
 
 
         public Result<T> AddMethodInfo(params string[] infos)
         {
-            base.ErrorDescription.ErrorMessage = $"{typeof(T).Name} {string.Join(", ", infos)}, {ErrorDescription.ErrorMessage}";
+            base.ErrorDescription!.ErrorMessage = $"{typeof(T).Name} {string.Join(", ", infos)}, {ErrorDescription.ErrorMessage}";
             return this;
         }
 
@@ -109,7 +119,7 @@ namespace BlogTemplate.Application.Abstractions
             if (Conclusion && Output != null)
                 return Output;
 
-            throw ErrorDescription.AsException();
+            throw ErrorDescription!.AsException();
         }
     }
 }

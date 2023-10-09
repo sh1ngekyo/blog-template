@@ -34,6 +34,6 @@ namespace BlogTemplate.Application.Features.Comments.Commands.Delete
                 });
         }
         IEnumerable<Comment> Flatten(IEnumerable<Comment> comments) =>
-            comments.SelectMany(x => Flatten(x.Children)).Concat(comments);
+            comments.SelectMany(x => Flatten(x.Children!)).Concat(comments);
     }
 }

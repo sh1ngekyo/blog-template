@@ -6,17 +6,17 @@ namespace BlogTemplate.Application.Common.Errors
     public class ErrorDescription
     {
         public ErrorType ErrorType { get; set; }
-        public string ErrorMessage { get; set; }
-        public string StackTrace { get; set; }
+        public string? ErrorMessage { get; set; }
+        public string? StackTrace { get; set; }
 
-        private Exception exception;
+        private Exception? exception;
         internal Exception Exception
         {
-            get => exception;
+            get => exception!;
             set
             {
                 exception = value;
-                StackTrace = exception?.StackTrace;
+                StackTrace = exception?.StackTrace!;
             }
         }
 
@@ -29,7 +29,7 @@ namespace BlogTemplate.Application.Common.Errors
 
         public AppException AsException()
         {
-            return new AppException(ErrorType, ErrorMessage, Exception);
+            return new AppException(ErrorType, ErrorMessage!, Exception);
         }
     }
 }

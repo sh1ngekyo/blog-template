@@ -25,7 +25,7 @@ namespace BlogTemplate.Tests.Features.Post.Commands
             }, CancellationToken.None);
 
             Assert.False(response.Conclusion);
-            Assert.Equal(ErrorType.NotFound, response.ErrorDescription.ErrorType);
+            Assert.Equal(ErrorType.NotFound, response.ErrorDescription?.ErrorType);
         }
 
         [Fact]
@@ -33,7 +33,7 @@ namespace BlogTemplate.Tests.Features.Post.Commands
         {
             var idForDelete = 1;
             var handler = new DeletePostCommandHandler(UserManager, Context);
-            Assert.NotNull(Context.Posts.FirstOrDefault(x => x.Id == idForDelete));
+            Assert.NotNull(Context.Posts?.FirstOrDefault(x => x.Id == idForDelete));
 
             var response = await handler.Handle(new DeletePostCommand
             {
@@ -42,7 +42,7 @@ namespace BlogTemplate.Tests.Features.Post.Commands
             }, CancellationToken.None);
 
             Assert.True(response.Conclusion);
-            Assert.NotNull(response.Output.RemoveThumbnailUrl);
+            Assert.NotNull(response.Output?.RemoveThumbnailUrl);
             Assert.Equal(ResultType.Deleted, response.ResultType);
 
             var deletedPost = Context.Posts.FirstOrDefault(x => x.Id == idForDelete);
@@ -54,7 +54,7 @@ namespace BlogTemplate.Tests.Features.Post.Commands
         {
             var idForDelete = 2;
             var handler = new DeletePostCommandHandler(UserManager, Context);
-            Assert.NotNull(Context.Posts.FirstOrDefault(x => x.Id == idForDelete));
+            Assert.NotNull(Context.Posts?.FirstOrDefault(x => x.Id == idForDelete));
             
             var response = await handler.Handle(new DeletePostCommand
             {
@@ -63,7 +63,7 @@ namespace BlogTemplate.Tests.Features.Post.Commands
             }, CancellationToken.None);
 
             Assert.True(response.Conclusion);
-            Assert.NotNull(response.Output.RemoveThumbnailUrl);
+            Assert.NotNull(response.Output?.RemoveThumbnailUrl);
             Assert.Equal(ResultType.Deleted, response.ResultType);
 
             var deletedPost = Context.Posts.FirstOrDefault(x => x.Id == idForDelete);
@@ -75,7 +75,7 @@ namespace BlogTemplate.Tests.Features.Post.Commands
         {
             var idForDelete = 3;
             var handler = new DeletePostCommandHandler(UserManager, Context);
-            Assert.NotNull(Context.Posts.FirstOrDefault(x => x.Id == idForDelete));
+            Assert.NotNull(Context.Posts?.FirstOrDefault(x => x.Id == idForDelete));
 
             var response = await handler.Handle(new DeletePostCommand
             {
@@ -84,7 +84,7 @@ namespace BlogTemplate.Tests.Features.Post.Commands
             }, CancellationToken.None);
 
             Assert.False(response.Conclusion);
-            Assert.Equal(ErrorType.NotAuthorized, response.ErrorDescription.ErrorType);
+            Assert.Equal(ErrorType.NotAuthorized, response.ErrorDescription?.ErrorType);
         }
     }
 }

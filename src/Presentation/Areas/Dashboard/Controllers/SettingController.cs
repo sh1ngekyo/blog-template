@@ -15,7 +15,7 @@ namespace BlogTemplate.Presentation.Areas.Dashboard.Controllers
     public class SettingController : BaseController
     {
         private readonly ImageUtility _imageUtility;
-        public INotyfService _notification { get; }
+        private readonly INotyfService _notification;
 
         public SettingController(INotyfService notyfService,
                                 ImageUtility imageUtility)
@@ -27,7 +27,7 @@ namespace BlogTemplate.Presentation.Areas.Dashboard.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            return View((await Mediator.Send(new GetAllSettingsQuery())).Output.FirstOrDefault());
+            return View((await Mediator.Send(new GetAllSettingsQuery())).Output?.FirstOrDefault());
         }
 
         [HttpPost]
@@ -51,7 +51,7 @@ namespace BlogTemplate.Presentation.Areas.Dashboard.Controllers
             });
             if (response.Conclusion)
             {
-                _imageUtility.Remove(response.Output.RemoveThumbnailUrl!);
+                _imageUtility.Remove(response.Output?.RemoveThumbnailUrl!);
                 _notification.Success("Settings updated succesfully");
                 return RedirectToAction("Index", "Setting", new { area = "Dashboard" });
             }

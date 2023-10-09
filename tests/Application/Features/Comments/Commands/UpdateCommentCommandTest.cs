@@ -18,7 +18,7 @@ namespace BlogTemplate.Tests.Features.Comments.Commands
         {
             var handler = new UpdateCommentCommandHandler(Context);
 
-            var comment = Context.Comments.Where(x => x.CommentId == 1).FirstOrDefault();
+            var comment = Context.Comments!.Where(x => x.CommentId == 1).FirstOrDefault();
             var response = await handler.Handle(new UpdateCommentCommand
             {
                 CommentId = 1,
@@ -27,10 +27,10 @@ namespace BlogTemplate.Tests.Features.Comments.Commands
 
             Assert.True(response.Conclusion);
             Assert.Equal(ResultType.Updated, response.ResultType);
-            var post = Context.Posts.FirstOrDefault(x => x.Id == 1);
-            Assert.Equal(post.Slug, response.Output.PostSlug);
-            Assert.Equal("Updated", comment.Content);
-            Assert.NotEqual(comment.DateCreated, comment.DateModified);
+            var post = Context.Posts!.FirstOrDefault(x => x.Id == 1);
+            Assert.Equal(post?.Slug, response.Output?.PostSlug);
+            Assert.Equal("Updated", comment?.Content);
+            Assert.NotEqual(comment?.DateCreated, comment?.DateModified);
         }
     }
 }

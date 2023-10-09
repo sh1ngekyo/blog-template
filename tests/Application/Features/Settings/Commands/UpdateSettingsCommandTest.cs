@@ -31,7 +31,7 @@ namespace BlogTemplate.Tests.Features.Settings.Commands
 
             Assert.True(response.Conclusion);
             Assert.Equal(ResultType.Updated, response.ResultType);
-            Assert.Null(response.Output.RemoveThumbnailUrl);
+            Assert.Null(response.Output?.RemoveThumbnailUrl);
 
             Assert.NotNull(await Context.Settings!.SingleOrDefaultAsync(settings =>
                 settings.Id == DbContextAddSettingsExtension.SettingsId &&
@@ -54,7 +54,7 @@ namespace BlogTemplate.Tests.Features.Settings.Commands
 
             Assert.True(response.Conclusion);
             Assert.Equal(ResultType.Updated, response.ResultType);
-            Assert.NotNull(response.Output.RemoveThumbnailUrl);
+            Assert.NotNull(response.Output?.RemoveThumbnailUrl);
             Assert.Equal(oldThumbnail, response.Output.RemoveThumbnailUrl);
             Assert.NotEqual(oldThumbnail, (await Context.Settings!.SingleOrDefaultAsync(settings =>
                 settings.Id == DbContextAddSettingsExtension.SettingsId))!.ThumbnailUrl);
@@ -71,7 +71,7 @@ namespace BlogTemplate.Tests.Features.Settings.Commands
             }, CancellationToken.None);
 
             Assert.False(response.Conclusion);
-            Assert.Equal(ErrorType.NotFound, response.ErrorDescription.ErrorType);
+            Assert.Equal(ErrorType.NotFound, response.ErrorDescription?.ErrorType);
         }
 
         [Fact]
@@ -97,7 +97,7 @@ namespace BlogTemplate.Tests.Features.Settings.Commands
 
 
             Assert.False(response.Conclusion);
-            Assert.Equal(ErrorType.NotValid, response.ErrorDescription.ErrorType);
+            Assert.Equal(ErrorType.NotValid, response.ErrorDescription?.ErrorType);
         }
     }
 }

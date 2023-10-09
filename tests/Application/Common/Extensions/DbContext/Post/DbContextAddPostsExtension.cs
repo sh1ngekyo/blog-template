@@ -6,7 +6,7 @@ namespace BlogTemplate.Tests.Common.Extensions.DbContext.Post
     {
         public static ApplicationDbContext AddPosts(this ApplicationDbContext context)
         {
-            context.Posts.AddRange(
+            context.Posts?.AddRange(
                 new Domain.Models.Post
                 {
                     Id = 1,

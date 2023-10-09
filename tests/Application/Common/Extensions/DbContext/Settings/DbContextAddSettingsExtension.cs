@@ -4,11 +4,11 @@ namespace BlogTemplate.Tests.Common.Extensions.DbContext.Settings
 {
     public static class DbContextAddSettingsExtension
     {
-        public static int SettingsId = 1;
+        public static readonly int SettingsId = 1;
 
         public static ApplicationDbContext AddSettings(this ApplicationDbContext context)
         {
-            context.Settings.AddRange(
+            context.Settings?.AddRange(
                 new Domain.Models.Setting
                 {
                     Id = SettingsId,

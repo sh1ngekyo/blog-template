@@ -39,7 +39,7 @@ namespace BlogTemplate.Application.Features.Auth.Commands.SignUp
             if (created)
             {
                 await _userManager.AddToRoleAsync(applicationUser, WebsiteRoles.WebsiteAuthor!);
-                await _signInManager.PasswordSignInAsync(request.UserName, request.Password, false, true);
+                await _signInManager.PasswordSignInAsync(request.UserName!, request.Password!, false, true);
                 return new Result(ResultType.Ok);
             }
             return new Result(ErrorType.Unknown);

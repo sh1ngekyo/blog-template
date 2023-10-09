@@ -26,7 +26,7 @@ namespace BlogTemplate.Tests.Features.User.Commands
             }, CancellationToken.None);
 
             Assert.True(response.Conclusion);
-            Assert.Equal(expectedMessage, response.Output.ResultMessage);
+            Assert.Equal(expectedMessage, response.Output?.ResultMessage);
         }
 
         [Fact]
@@ -42,7 +42,7 @@ namespace BlogTemplate.Tests.Features.User.Commands
             }, CancellationToken.None);
 
             Assert.True(response.Conclusion);
-            Assert.Equal(expectedMessage, response.Output.ResultMessage);
+            Assert.Equal(expectedMessage, response.Output?.ResultMessage);
         }
 
         [Fact]
@@ -58,7 +58,7 @@ namespace BlogTemplate.Tests.Features.User.Commands
             }, CancellationToken.None);
 
             Assert.False(response.Conclusion);
-            Assert.Equal(expectedErrorType, response.ErrorDescription.ErrorType);
+            Assert.Equal(expectedErrorType, response.ErrorDescription?.ErrorType);
         }
     }
 }

@@ -52,7 +52,7 @@ namespace BlogTemplate.Tests.Features.Page.Queries
 
             Assert.False(response.Conclusion);
             Assert.Null(response.Output);
-            Assert.Equal(ErrorType.NotFound, response.ErrorDescription.ErrorType);
+            Assert.Equal(ErrorType.NotFound, response.ErrorDescription?.ErrorType);
         }
     }
 }

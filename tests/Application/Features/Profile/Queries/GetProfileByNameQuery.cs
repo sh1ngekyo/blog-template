@@ -35,12 +35,12 @@ namespace BlogTemplate.Tests.Features.Profile.Queries
 
             Assert.True(response.Conclusion);
             Assert.NotNull(response.Output);
-            var posts = Context.Posts.Where(x => x.ApplicationUserId == UserManagerFactory.UserAId)
+            var posts = Context.Posts!.Where(x => x.ApplicationUserId == UserManagerFactory.UserAId)
                 .OrderByDescending(x => x.CreatedDate).ToList();
-            Assert.Equal(posts.Count, response.Output.Posts.Count);
-            for (var i = 0; i < posts.Count(); i++) 
+            Assert.Equal(posts.Count, response.Output.Posts?.Count);
+            for (var i = 0; i < posts.Count; i++) 
             {
-                Assert.Equal(posts[i], response.Output.Posts[i]);
+                Assert.Equal(posts[i], response.Output.Posts![i]);
             }
         }
 
@@ -59,7 +59,7 @@ namespace BlogTemplate.Tests.Features.Profile.Queries
 
             Assert.False(response.Conclusion);
             Assert.Null(response.Output);
-            Assert.Equal(ErrorType.NotFound, response.ErrorDescription.ErrorType);
+            Assert.Equal(ErrorType.NotFound, response.ErrorDescription?.ErrorType);
         }
     }
 }

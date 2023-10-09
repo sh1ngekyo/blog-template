@@ -26,7 +26,7 @@ namespace BlogTemplate.Tests.Features.User.Commands
 
             Assert.True(response.Conclusion);
             Assert.Equal(ResultType.Deleted, response.ResultType);
-            Assert.NotNull(response.Output.RemoveThumbnailUrl);
+            Assert.NotNull(response.Output?.RemoveThumbnailUrl);
             Assert.NotNull(response.Output.DeletedUserName);
             Assert.Equal(expectedUserName, response.Output.DeletedUserName);
         }
@@ -44,7 +44,7 @@ namespace BlogTemplate.Tests.Features.User.Commands
 
             Assert.False(response.Conclusion);
             Assert.Null(response.Output);
-            Assert.Equal(expectedErrorType, response.ErrorDescription.ErrorType);
+            Assert.Equal(expectedErrorType, response.ErrorDescription?.ErrorType);
         }
     }
 }

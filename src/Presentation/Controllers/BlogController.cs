@@ -17,7 +17,7 @@ namespace BlogTemplate.Presentation.Controllers
 {
     public class BlogController : BaseController
     {
-        public INotyfService _notification { get; }
+        private readonly INotyfService _notification;
 
         public BlogController(INotyfService notification)
         {
@@ -45,7 +45,7 @@ namespace BlogTemplate.Presentation.Controllers
             {
                 return RedirectOnError();
             }
-            response.Output.Comments = (await Mediator.Send(new GetAllCommentsByPostIdQuery
+            response.Output!.Comments = (await Mediator.Send(new GetAllCommentsByPostIdQuery
             {
                 PostId = response.Output.Id
             })).Output;
@@ -64,7 +64,7 @@ namespace BlogTemplate.Presentation.Controllers
                 })).Output;
                 var response = await Mediator.Send(new CreateCommentCommand()
                 {
-                    ApplicationUserId = user.Id,
+                    ApplicationUserId = user?.Id,
                     Content = commentCDto.Content,
                     ParentId = commentCDto.ReplyToCommentId,
                     PostId = commentCDto.PostId
@@ -74,7 +74,7 @@ namespace BlogTemplate.Presentation.Controllers
                     _notification.Success("Comment was created");
                     return RedirectToAction("Post", new
                     {
-                        slug = response.Output.PostSlug
+                        slug = response.Output?.PostSlug
                     });
                 }
             }
@@ -98,7 +98,7 @@ namespace BlogTemplate.Presentation.Controllers
                     _notification.Success("Comment was updated");
                     return RedirectToAction("Post", new
                     {
-                        slug = response.Output.PostSlug
+                        slug = response.Output?.PostSlug
                     });
                 }
             }
@@ -118,7 +118,7 @@ namespace BlogTemplate.Presentation.Controllers
                 _notification.Success("Comment was deleted");
                 return RedirectToAction("Post", new
                 {
-                    slug = response.Output.PostSlug
+                    slug = response.Output?.PostSlug
                 });
             }
             _notification.Success("Post not found");
