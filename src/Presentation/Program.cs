@@ -20,7 +20,7 @@ builder.Services.AddControllersWithViews()
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
-builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
+builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(connectionString));
 builder.Services.AddScoped<IApplicationDbContext>(provider =>
                 provider.GetRequiredService<ApplicationDbContext>());
 
@@ -36,7 +36,7 @@ builder.Services.AddAutoMapper(config =>
 
 builder.Services.AddApplication();
 builder.Services.AddSingleton<ImageUtility>();
-builder.Services.AddScoped<IDbInitializer, DbInitializer>();
+builder.Services.AddScoped<IDatabaseInitialBuilder, DatabaseInitialBuilder>();
 
 builder.Services.AddNotyf(config => { config.DurationInSeconds = 10; config.IsDismissable = true; config.Position = NotyfPosition.BottomRight; });
 
@@ -79,6 +79,6 @@ app.Run();
 void DataSeeding()
 {
     using var scope = app.Services.CreateScope();
-    var dbInitialize = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
-    dbInitialize.Initialize();
+    var builder = scope.ServiceProvider.GetRequiredService<IDatabaseInitialBuilder>();
+    builder.AddAdminUser().AddPages().AddSettings().Build();
 }
