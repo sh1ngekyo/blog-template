@@ -5,6 +5,7 @@
       <TargetFramework>net7.0</TargetFramework>
       <ImplicitUsings>enable</ImplicitUsings>
       <Nullable>enable</Nullable>
+      <UserSecretsId>47c9e7bf-4b3c-41e9-a1fa-8122276fc619</UserSecretsId>
     </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="AspNetCoreHero.ToastNotification" Version="1.1.0" />
