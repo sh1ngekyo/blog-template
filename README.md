@@ -1,8 +1,8 @@
 # blog-template
 ![Build](https://img.shields.io/github/actions/workflow/status/sh1ngekyo/blog-template/build.yml?style=for-the-badge&label=Build&labelColor=black)
-![Tests](https://img.shields.io/github/actions/workflow/status/sh1ngekyo/blog-template/tests.yml?style=for-the-badge&label=Tests&labelColor=black)
+![Tests](https://img.shields.io/github/actions/workflow/status/sh1ngekyo/blog-template/build.yml?style=for-the-badge&label=Tests&labelColor=black)
 
-This template can be used to create a blog/forum based on Asp.net core (API or MVC). Currently presentation layer implemented with MVC.
+This template can be used to create a blog/forum based on Asp.net core (API or MVC). Currently presentation layer implemented with MVC. Works with PostgreSQL.
 
 # Features:
 1. Role based Auth
@@ -15,7 +15,6 @@ This template can be used to create a blog/forum based on Asp.net core (API or M
 # Improvements:
 1. Move front-end to React/Angular/Vue
 2. Implement tags & search for posts
-3. Move from localdb to postgresql/mssql server
 
 # Packages:
 1. EF Core
@@ -28,8 +27,9 @@ This template can be used to create a blog/forum based on Asp.net core (API or M
 
 # Download & setup:
 1. Download/Clone: `git clone https://github.com/sh1ngekyo/blog-template.git`
-2. Apply Migration in your package manager: `Update-Database` or use dotnet cli.
-3. Run & configure your site in Dashboard. Default Login: Admin, Default Password: Admin@0011. Change default account settings in DbInitializer.
+2. Update your Postgre connection string in secrets.json/appsettings.json. 
+3. Apply Migration in your package manager: `Update-Database` or use dotnet cli.
+4. Run & configure your site in Dashboard. Default Login: Admin, Default Password: Admin@1234. Change default account settings in DatabaseInitialBuilder.
 
 # Blog example/Features:
 
